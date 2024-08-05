@@ -16,7 +16,7 @@
 
    open class Employee( val name:String,val id:Int,val salary:Int)
 
-   class Manager(val name1:String,val id1:Int,val salary1:Int, val bonus:Int) : Employee(name,id,salary){
+   class Manager(val name1:String,val id1:Int,val salary1:Int, val bonus:Int) : Employee(name1,id1,salary1){
     fun calculateTotalSalary():Int{
       return salary+bonus
     }
