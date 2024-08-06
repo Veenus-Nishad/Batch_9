@@ -9,8 +9,7 @@
 
    data class Book(val title: String)
 
-   class Member(val name: String, val memberId: Int) {
-       val borrowedBooks: MutableList<Book> = mutableListOf()
+   class Member(val name: String, val memberId: Int,var borrowedBooks:MutableList<Book>) {
    
        fun borrowBook(book: Book) {
            borrowedBooks.add(book)
