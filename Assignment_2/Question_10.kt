@@ -8,38 +8,57 @@ Assignment Batch 9
  employee.
     - **Bonus:** Add a method `displayAttendance()` to print the attendance details of the employee */
 
-data class Attendance(val day:Int,val present:Boolean)
-class Employee(val name:String,val employeeId:Int,var attendance:MutableList<Attendance>){
-  fun markAttendance(day:Int,present:Boolean){
-    attendance.add(Attendance(day, present))
+    class Employee(val name: String, val employeeId: Int) {
+      // An array of booleans representing attendance for each day of the month
+      private val attendance = BooleanArray(30) { false }
+  
+      // Method to mark attendance for a given day
+      fun markAttendance(day: Int, present: Boolean) {
+          if (day in 1..attendance.size) {
+              attendance[day - 1] = present
+          } else {
+              println("Invalid day: $day")
+          }
+      }
+  
+      // Method to calculate attendance percentage
+      fun calculateAttendance(): Double {
+          val presentDays = attendance.count { it }
+          return (presentDays.toDouble() / attendance.size) * 100
+      }
+  
+      // Bonus method to display attendance details
+      fun displayAttendance() {
+          println("Employee: $name (ID: $employeeId)")
+          println("Attendance: ${attendance.map { if (it) "P" else "A" }.joinToString(" ")}")
+          println("Attendance Percentage: ${"%.2f".format(calculateAttendance())}%\n")
+      }
   }
-  fun calculateAttendance(attendance:Attendance){
-        val totalDays = attendance.size
-        val presentDays = attendance.count { day.present } 
-        return (presentDays.toDouble() / totalDays) * 100.0 
+  
+  fun main() {
+      // Creating an array of Employee objects
+      val employees = arrayOf(
+          Employee("John Doe", 101),
+          Employee("Jane Smith", 102),
+          Employee("Emily Davis", 103)
+      )
+  
+      // Marking attendance for each employee
+      employees[0].markAttendance(1, true)
+      employees[0].markAttendance(2, true)
+      employees[0].markAttendance(3, false)
+  
+      employees[1].markAttendance(1, true)
+      employees[1].markAttendance(2, false)
+      employees[1].markAttendance(3, true)
+  
+      employees[2].markAttendance(1, false)
+      employees[2].markAttendance(2, true)
+      employees[2].markAttendance(3, true)
+  
+      // Printing attendance details for each employee
+      for (employee in employees) {
+          employee.displayAttendance()
+      }
   }
-  fun displayAttendance() {
-    println("Employee Name: $name")
-    println("Employee ID: $employeeId")
-    println("Attendance:")
-    attendance.forEach { attendance ->
-        println("Day ${attendance.day}: ${if (attendance.present) "Present" else "Absent"}")
-    }
-}
-}
-fun main() {
-  val employees = arrayOf(
-      Employee("A", 101, mutableListOf()),
-      Employee("B", 102, mutableListOf())
-  )
-  employees[0].markAttendance(1, true)
-  employees[0].markAttendance(2, false)
-  employees[1].markAttendance(3, true)
-
-  for (employee in employees) {
-      employee.calculateAttendance()
-      employee.displayAttendance()
-      println("Attendance Percentage: ${employee.calculateAttendance()}%")
-      println() 
-  }
-}
+  
