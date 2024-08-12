@@ -17,20 +17,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun Score(){
-    Card(modifier = Modifier.padding(16.dp).height(120.dp), shape= RoundedCornerShape(10.dp)) {
+fun Score(player1Score:Int,player2Score:Int){
+    Card(modifier = Modifier
+        .padding(16.dp)
+        .height(120.dp), shape= RoundedCornerShape(10.dp)) {
         Row(modifier=Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.Center){
             Text(text="Score", fontSize = 26.sp)
         }
         Row(modifier=Modifier.fillMaxSize(), horizontalArrangement = Arrangement.SpaceAround, verticalAlignment = Alignment.CenterVertically){
-            Text(text="1", fontSize = 30.sp)
-            Text(text="2", fontSize = 30.sp)
+            Text(text="${player1Score}", fontSize = 30.sp)
+            Text(text= "${player2Score}", fontSize = 30.sp)
         }
     }
-}
-
-@Preview(showSystemUi = true)
-@Composable
-fun PreviewNameAndScore(){
-    Score()
 }
