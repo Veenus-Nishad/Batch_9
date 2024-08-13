@@ -84,6 +84,7 @@ fun GameApp(modifier: Modifier) {
                 enabled = if (playerTurn.value) true else false,
             ) {
                 Text(text = "Player 1")
+                Text(text = "Hello World")
 
             }
             Button(onClick = {}, enabled = if (playerTurn.value) false else true) {
