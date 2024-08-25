@@ -5,15 +5,22 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.contactsappwithroomdatabaseversion1.data.dao.ContactDao
 import com.example.contactsappwithroomdatabaseversion1.presentation.routes.ContactScreen
 import com.example.contactsappwithroomdatabaseversion1.presentation.routes.SaveEditScreen
+import com.example.contactsappwithroomdatabaseversion1.presentation.screen.AddEditContactScreen
+import com.example.contactsappwithroomdatabaseversion1.presentation.screen.Contacts
 
 @Composable
-fun App(modifier: Modifier = Modifier) {
+fun App(dbObject: ContactDao,modifier: Modifier=Modifier) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = ContactScreen) {
-        composable<ContactScreen> {}
-        composable<SaveEditScreen> {}
+        composable<ContactScreen> {
+            Contacts()
+        }
+        composable<SaveEditScreen> {
+            AddEditContactScreen(navController = navController)
+        }
     }
 
 }

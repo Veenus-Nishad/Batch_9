@@ -7,10 +7,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import com.example.contactsappwithroomdatabaseversion1.data.DatabaseInstance
 import com.example.contactsappwithroomdatabaseversion1.presentation.App
 import com.example.contactsappwithroomdatabaseversion1.ui.theme.ContactsAppWithRoomDatabaseVersion1Theme
 
@@ -19,9 +17,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val dbObject=DatabaseInstance.getDB(this).dao()
             ContactsAppWithRoomDatabaseVersion1Theme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                   App(modifier=Modifier.padding(innerPadding))
+                   App(dbObject,modifier=Modifier.padding(innerPadding))
                 }
             }
         }
