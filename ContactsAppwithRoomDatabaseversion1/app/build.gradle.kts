@@ -1,16 +1,18 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
-    id("kotlin-kapt")
-    kotlin("plugin.serialization") version "2.0.10"
+    alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.compose.compiler)
+    id("com.google.devtools.ksp")
+    kotlin("plugin.serialization") version "2.0.20"
+
 }
 
 android {
-    namespace = "com.example.loginsignupwithnavigation"
+    namespace = "com.example.contactsappwithroomdatabaseversion1"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.loginsignupwithnavigation"
+        applicationId = "com.example.contactsappwithroomdatabaseversion1"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -42,7 +44,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.9"
+        kotlinCompilerExtensionVersion = "1.5.1"
     }
     packaging {
         resources {
@@ -68,15 +70,21 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    //Added dependecies
+    val room_version = "2.6.1"
 
-    // Added dependencies
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
 
-    //naviagtion
-    implementation("androidx.navigation:navigation-compose:2.8.0-alpha08")
-    //serialization
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
-    //Material 3
-    implementation("androidx.compose.material3:material3:1.3.0-beta05")
-    implementation(kotlin("script-runtime"))
+    // To use Kotlin Symbol Processing (KSP)
+    ksp("androidx.room:room-compiler:$room_version")
+    //navigation
+    implementation("androidx.navigation:navigation-compose:2.8.0-rc01")
+
+    //Serializable
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
+
+
 }
