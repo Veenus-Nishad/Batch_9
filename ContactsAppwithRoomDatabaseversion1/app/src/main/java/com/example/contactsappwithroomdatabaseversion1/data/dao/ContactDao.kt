@@ -5,7 +5,6 @@ import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
 import com.example.contactsappwithroomdatabaseversion1.data.tables.Contact
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ContactDao {
@@ -17,6 +16,9 @@ interface ContactDao {
     fun deleteContact(contact:Contact)
 
     @Query("SELECT * FROM contact ") // to read we use Query
-    fun getAllContact(): Flow<List<Contact>> // Flow to Auto Refresh the data changes
+    fun getAllContact(): List<Contact>
+
+    @Query("SELECT * FROM contact WHERE name LIKE '%' || :name || '%' OR phNo LIKE '%' || :number || '%' ")
+    fun isContactAlreadyExisting(name:String,number:String) : List<Contact>
 
 }

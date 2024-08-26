@@ -16,11 +16,12 @@ fun App(dbObject: ContactDao,modifier: Modifier=Modifier) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = ContactScreen) {
         composable<ContactScreen> {
-            Contacts()
+            Contacts(dbObject,navController)
         }
         composable<SaveEditScreen> {
-            AddEditContactScreen(navController = navController)
+            AddEditContactScreen(navController,dbObject)
         }
+
     }
 
 }
