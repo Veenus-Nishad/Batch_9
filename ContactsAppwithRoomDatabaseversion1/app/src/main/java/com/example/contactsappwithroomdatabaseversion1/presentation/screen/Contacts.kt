@@ -1,6 +1,8 @@
 package com.example.contactsappwithroomdatabaseversion1.presentation.screen
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -10,6 +12,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -24,26 +27,42 @@ import com.example.contactsappwithroomdatabaseversion1.data.dao.ContactDao
 import com.example.contactsappwithroomdatabaseversion1.presentation.routes.SaveEditScreen
 
 @Composable
-fun Contacts( dbObject: ContactDao, navController: NavHostController){
+fun Contacts(dbObject: ContactDao, navController: NavHostController) {
+    val sortedContacts = dbObject.getAllContact().groupBy {
+        it.name.firstOrNull()?.uppercaseChar() ?: Char.MIN_VALUE
+    }
 
-    Scaffold(modifier= Modifier.fillMaxWidth(), floatingActionButton = {
+    Scaffold(modifier = Modifier.fillMaxWidth(), floatingActionButton = {
         FloatingActionButton(onClick = { navController.navigate(SaveEditScreen) }) {
             Icon(imageVector = Icons.Default.Add, contentDescription = null)
         }
-    }) {
-            LazyColumn(modifier=Modifier.padding(it)) {
-            items(dbObject.getAllContact()){
-                Card(modifier=Modifier.fillMaxWidth()) {
-                    Text(text = it.name)
-                    Text(text = it.phNo)
-                    Text(text = it.email)
-                    IconButton(onClick = { dbObject.deleteContact(it) }) {
-                        Image(imageVector = Icons.Default.Delete, contentDescription = null )
-                    }
+    }) {innerPadding->
+        LazyColumn(modifier = Modifier.padding(innerPadding)) {
+            sortedContacts.forEach { (firstLetter, contact) ->
+                item { Row(modifier=Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.Center) {
+                    Text(text = firstLetter.toString()) }
                 }
-                Spacer(modifier = Modifier.height(15.dp))
+                items(contact,key={it.Id!!}) { contactData ->
+                    Card(modifier = Modifier.fillMaxWidth()) {
+                        Text(text = contactData.name)
+                        Text(text = contactData.phNo)
+                        Text(text = contactData.email)
+                        Row {
+                            IconButton(onClick = { dbObject.deleteContact(contactData) }) {
+                                Image(imageVector = Icons.Default.Delete, contentDescription = null)
+                            }
+                            IconButton(onClick = { dbObject.saveUpdateContact(contactData) }) {
+                                Image(imageVector = Icons.Default.Edit, contentDescription = null)
+                            }
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(15.dp))
+                }
+
+
             }
-            }
+
+        }
     }
 
 

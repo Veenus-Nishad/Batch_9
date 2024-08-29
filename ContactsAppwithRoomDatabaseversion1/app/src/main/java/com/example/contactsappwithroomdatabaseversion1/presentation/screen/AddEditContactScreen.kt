@@ -35,7 +35,7 @@ import com.example.contactsappwithroomdatabaseversion1.data.tables.Contact
 
 
 @Composable
-fun AddEditContactScreen(navController: NavHostController, dbObject: ContactDao) {
+fun AddEditContactScreen(navController: NavHostController, dbObject: ContactDao,contactId: Int? = null) {
     var name by rememberSaveable {
         mutableStateOf("")
     }
@@ -44,9 +44,6 @@ fun AddEditContactScreen(navController: NavHostController, dbObject: ContactDao)
     }
     var email by rememberSaveable {
         mutableStateOf("")
-    }
-    var error by rememberSaveable {
-        mutableStateOf(false)
     }
     var context = LocalContext.current
 
@@ -108,7 +105,7 @@ fun AddEditContactScreen(navController: NavHostController, dbObject: ContactDao)
                     }
                 } else {
                     //Toast humari app nahi android show karti hai isiliye context pass karte hai
-                    Toast.makeText(context,"Email is not valid",Toast.LENGTH_LONG)
+                    Toast.makeText(context,"Email is not valid",Toast.LENGTH_LONG).show()
                 }
 
 

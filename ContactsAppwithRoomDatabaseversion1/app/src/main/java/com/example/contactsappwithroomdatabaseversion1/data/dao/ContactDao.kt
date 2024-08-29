@@ -21,4 +21,8 @@ interface ContactDao {
     @Query("SELECT * FROM contact WHERE name LIKE '%' || :name || '%' OR phNo LIKE '%' || :number || '%' ")
     fun isContactAlreadyExisting(name:String,number:String) : List<Contact>
 
+    // new changes
+    @Query("SELECT * FROM Contact WHERE id = :id")
+    fun getContactById(id: Int?) : Contact
+
 }
