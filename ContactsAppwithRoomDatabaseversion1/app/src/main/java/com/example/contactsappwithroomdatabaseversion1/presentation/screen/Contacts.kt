@@ -51,7 +51,7 @@ fun Contacts(dbObject: ContactDao, navController: NavHostController) {
                             IconButton(onClick = { dbObject.deleteContact(contactData) }) {
                                 Image(imageVector = Icons.Default.Delete, contentDescription = null)
                             }
-                            IconButton(onClick = { dbObject.saveUpdateContact(contactData) }) {
+                            IconButton(onClick = { navController.navigate(SaveEditScreen) }) {
                                 Image(imageVector = Icons.Default.Edit, contentDescription = null)
                             }
                         }

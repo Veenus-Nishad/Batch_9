@@ -47,6 +47,14 @@ fun AddEditContactScreen(navController: NavHostController, dbObject: ContactDao,
     }
     var context = LocalContext.current
 
+    val isEdit = contactId != null
+    val contact = dbObject.getContactById(contactId)
+
+    if (isEdit) {
+        name = contact?.name ?: ""
+        phNo = contact?.phNo ?: ""
+        email = contact?.email ?: ""
+    }
 
     Column(
         modifier = Modifier.fillMaxSize(),
