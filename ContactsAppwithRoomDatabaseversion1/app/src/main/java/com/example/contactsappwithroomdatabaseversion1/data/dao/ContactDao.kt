@@ -10,19 +10,16 @@ import com.example.contactsappwithroomdatabaseversion1.data.tables.Contact
 interface ContactDao {
 
     @Upsert // for update and insert
-    fun saveUpdateContact(contact:Contact)
+    suspend fun saveUpdateContact(contact:Contact)
 
     @Delete
-    fun deleteContact(contact:Contact)
+    suspend fun deleteContact(contact:Contact)
 
     @Query("SELECT * FROM contact ") // to read we use Query
-    fun getAllContact(): List<Contact>
+     fun getAllContact(): List<Contact>
 
     @Query("SELECT * FROM contact WHERE name LIKE '%' || :name || '%' OR phNo LIKE '%' || :number || '%' ")
-    fun isContactAlreadyExisting(name:String,number:String) : List<Contact>
+    suspend fun isContactAlreadyExisting(name:String,number:String) : List<Contact>
 
-    // new changes
-    @Query("SELECT * FROM Contact WHERE id = :id")
-    fun getContactById(id: Int?) : Contact
 
 }

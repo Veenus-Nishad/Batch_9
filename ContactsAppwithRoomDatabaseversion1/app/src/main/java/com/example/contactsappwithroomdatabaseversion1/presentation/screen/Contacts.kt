@@ -20,14 +20,19 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.contactsappwithroomdatabaseversion1.data.dao.ContactDao
 import com.example.contactsappwithroomdatabaseversion1.presentation.routes.SaveEditScreen
+import kotlinx.coroutines.launch
 
 @Composable
 fun Contacts(dbObject: ContactDao, navController: NavHostController) {
+
+    var customCoroutine= rememberCoroutineScope()
+
     val sortedContacts = dbObject.getAllContact().groupBy {
         it.name.firstOrNull()?.uppercaseChar() ?: Char.MIN_VALUE
     }
@@ -48,7 +53,11 @@ fun Contacts(dbObject: ContactDao, navController: NavHostController) {
                         Text(text = contactData.phNo)
                         Text(text = contactData.email)
                         Row {
-                            IconButton(onClick = { dbObject.deleteContact(contactData) }) {
+                            IconButton(onClick = {
+                                customCoroutine.launch {
+                                    dbObject.deleteContact(contactData)
+                                }
+                                 }) {
                                 Image(imageVector = Icons.Default.Delete, contentDescription = null)
                             }
                             IconButton(onClick = { navController.navigate(SaveEditScreen) }) {

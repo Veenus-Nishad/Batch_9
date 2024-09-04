@@ -21,6 +21,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -32,10 +33,15 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.contactsappwithroomdatabaseversion1.data.dao.ContactDao
 import com.example.contactsappwithroomdatabaseversion1.data.tables.Contact
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 @Composable
-fun AddEditContactScreen(navController: NavHostController, dbObject: ContactDao,contactId: Int? = null) {
+fun AddEditContactScreen(
+    navController: NavHostController,
+    dbObject: ContactDao
+) {
     var name by rememberSaveable {
         mutableStateOf("")
     }
@@ -47,14 +53,8 @@ fun AddEditContactScreen(navController: NavHostController, dbObject: ContactDao,
     }
     var context = LocalContext.current
 
-    val isEdit = contactId != null
-    val contact = dbObject.getContactById(contactId)
+    var customCoroutine= rememberCoroutineScope()
 
-    if (isEdit) {
-        name = contact?.name ?: ""
-        phNo = contact?.phNo ?: ""
-        email = contact?.email ?: ""
-    }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -85,7 +85,8 @@ fun AddEditContactScreen(navController: NavHostController, dbObject: ContactDao,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Done
-            ))
+            )
+        )
         Spacer(modifier = Modifier.height(15.dp))
         TextField(
             value = email,
@@ -101,19 +102,37 @@ fun AddEditContactScreen(navController: NavHostController, dbObject: ContactDao,
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
             Button(onClick = {
                 if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    if (dbObject.isContactAlreadyExisting(name = name, number = phNo)
-                            .isNotEmpty()
-                    ) {
-                        Toast.makeText(context, "This name already exist", Toast.LENGTH_LONG).show()
-                    } else {
-                        dbObject.saveUpdateContact(
-                            Contact(name = name, phNo = phNo, email = email)
-                        )
-                        navController.navigateUp()
+                  /* Global Scope Wali Approach which is bakwass
+                    GlobalScope.launch(Dispatchers.IO) {
+                        if (dbObject.isContactAlreadyExisting(name = name, number = phNo)
+                                .isNotEmpty()
+                        ) {
+                            Toast.makeText(context, "This name already exist", Toast.LENGTH_LONG)
+                                .show()
+                        } else {
+                            dbObject.saveUpdateContact(
+                                Contact(name = name, phNo = phNo, email = email)
+                            )
+                            navController.navigateUp()
+                        }
+                    } */
+                    // Custom Coroutine Scope  Approach
+                    customCoroutine.launch(Dispatchers.IO) {
+                        if (dbObject.isContactAlreadyExisting(name = name, number = phNo)
+                                .isNotEmpty()
+                        ) {
+                            Toast.makeText(context, "This name already exist", Toast.LENGTH_LONG)
+                                .show()
+                        } else {
+                            dbObject.saveUpdateContact(
+                                Contact(name = name, phNo = phNo, email = email)
+                            )
+                            navController.navigateUp()
+                        }
                     }
                 } else {
                     //Toast humari app nahi android show karti hai isiliye context pass karte hai
-                    Toast.makeText(context,"Email is not valid",Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Email is not valid", Toast.LENGTH_LONG).show()
                 }
 
 
