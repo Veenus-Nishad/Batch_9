@@ -51,9 +51,9 @@ fun AddEditContactScreen(
     var email by rememberSaveable {
         mutableStateOf("")
     }
-    var context = LocalContext.current
+    val context = LocalContext.current
 
-    var customCoroutine= rememberCoroutineScope()
+    val customCoroutine= rememberCoroutineScope()
 
 
     Column(
