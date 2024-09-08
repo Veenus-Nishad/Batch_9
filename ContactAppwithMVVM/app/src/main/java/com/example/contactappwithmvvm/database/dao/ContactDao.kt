@@ -16,5 +16,9 @@ interface ContactDao {
     suspend fun deleteContacts(contacts: List<Contact>) // can delete multiple now
 
     @Query("SELECT * FROM contact_table")
-    fun getContactsOrderedByFirstName(): Flow<List<Contact>>
+    fun getAllContacts(): Flow<List<Contact>>
+
+    @Query("SELECT * FROM contact_table WHERE name = :name AND number = :number")
+    suspend fun isContactAlreadyExisting(name: String, number: String): List<Contact>
+
 }

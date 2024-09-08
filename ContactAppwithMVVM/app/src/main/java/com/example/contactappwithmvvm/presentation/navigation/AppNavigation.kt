@@ -2,22 +2,24 @@ package com.example.contactappwithmvvm.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.example.contactappwithmvvm.presentation.screen.AddEditScreenUI
 import com.example.contactappwithmvvm.presentation.screen.HomeScreenUI
+import com.example.contactappwithmvvm.viewmodel.ContactAppViewModel
 
 @Composable
-fun AppNavigation(modifier: Modifier=Modifier){
+fun AppNavigation(modifier: Modifier=Modifier,viewModel: ContactAppViewModel){
     val navController=rememberNavController()
     NavHost(navController = navController, startDestination = HomeScreen) {
         composable<HomeScreen>{
-            HomeScreenUI(navController)
+            HomeScreenUI(navController,viewModel)
         }
         composable<AddEditScreen>{
-            AddEditScreenUI(navController)
+            val addEditScreen=it.toRoute<AddEditScreen >() // ye id lene ke liye
+            AddEditScreenUI(navController,viewModel,addEditScreen.id)
         }
 
     }

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.contactappwithmvvm.database.ContactAppDatabase
+import com.example.contactappwithmvvm.database.DBInstance
 import com.example.contactappwithmvvm.database.tables.Contact
 import kotlinx.coroutines.launch
 
@@ -21,7 +22,7 @@ class ContactAppViewModel(
     var db: ContactAppDatabase
 
     init { // varna var by default hi create hojaega i.e the database instance is created only when it's actually needed.
-        db = ContactAppDatabase.getInstance(context)
+        db = DBInstance.getInstance(context)
     }
 
     fun addUpdateContact(contact: Contact) {   // iske advanced tarike bhi hai
