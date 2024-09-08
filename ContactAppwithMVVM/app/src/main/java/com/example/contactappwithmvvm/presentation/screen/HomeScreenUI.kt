@@ -1,8 +1,11 @@
 package com.example.contactappwithmvvm.presentation.screen
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -10,21 +13,31 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.contactappwithmvvm.database.tables.Contact
@@ -36,15 +49,21 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun HomeScreenUI(
-    navController: NavController ,
+    navController: NavController,
     viewModel: ContactAppViewModel
 ) {
     // lazyColumn mein dikhane ke liye contacts ko collect kar rahe hai
-    val contacts = remember{
+    val contacts = remember {
         mutableStateOf<List<Contact>>(emptyList<Contact>())
     }
 
-    val colorBrush = Brush.linearGradient(listOf(Color.Blue, Color.Yellow))
+    var expandedDropDownState by remember {
+        mutableStateOf(false)
+    }
+
+    var expandedCardIndex by remember { mutableStateOf<Int?>(null) }
+
+    val context = LocalContext.current
 
     // jetpack Compose mein composable ka bhi ek coroutine hota hai
     // launched effect tab chalta hai jab first time vo coroutine compose hota hai
@@ -68,14 +87,25 @@ fun HomeScreenUI(
             TopAppBar(
                 title = { Text(text = "Contacts") },
                 actions = {
-                    IconButton(onClick = {  }) {
+                    IconButton(onClick = { }) {
                         Image(imageVector = Icons.Filled.Search, contentDescription = "Search")
                     }
-                    IconButton(onClick = { navController.navigate(AddEditScreen)  }) {
+                    IconButton(onClick = { navController.navigate(AddEditScreen) }) {
                         Image(imageVector = Icons.Filled.Add, contentDescription = "Add")
                     }
-                    IconButton(onClick = { navController.navigate(AddEditScreen)  }) {
-                        Image(imageVector = Icons.Filled.MoreVert, contentDescription = "More Options")
+                    IconButton(onClick = { expandedDropDownState = !expandedDropDownState }) {
+                        Image(
+                            imageVector = Icons.Filled.MoreVert,
+                            contentDescription = "More Options"
+                        )
+                    }
+                    DropdownMenu(
+                        expanded = expandedDropDownState,
+                        onDismissRequest = { expandedDropDownState = false }) {
+                        DropdownMenuItem(
+                            text = { Text(text = "Recycle Bin") },
+                            onClick = { /*TODO*/ })
+                        DropdownMenuItem(text = { Text(text = "Settings") }, onClick = { /*TODO*/ })
                     }
 
 
@@ -85,18 +115,29 @@ fun HomeScreenUI(
     ) {
         Column(modifier = Modifier.padding(it)) {
             LazyColumn {
-                items(contacts.value) {
+                items(contacts.value) {contact->
+                    var isExpanded = expandedCardIndex == contact.id
                     Card(
-                        modifier = Modifier.padding(10.dp)
-                            .height(30.dp)
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .fillMaxHeight()
+                            .clickable { expandedCardIndex = if (isExpanded) null else contact.id }
                     ) {
 
-                        Row(
+                        Column(
                             modifier = Modifier.fillMaxSize()
                         ) {
-                            Text(text = it.name)
-                            Text(text = it.number)
-                            Text(text = it.email)
+                            Text(text = contact.name)
+                            if (isExpanded) {
+                                Text(text = "Mobile +91 ${contact.number}")
+                                Text(text = "Email ${contact.email}")
+                                Row {
+                                    Icon(imageVector = Icons.Filled.Phone, contentDescription ="Call" )
+                                    Icon(imageVector = Icons.Filled.Email, contentDescription ="Email" )
+                                    Icon(imageVector = Icons.Filled.Face, contentDescription ="Video Call" )
+                                    Icon(imageVector = Icons.Filled.Info, contentDescription ="More Info" )
+                                }
+                            }
                         }
                     }
                 }
