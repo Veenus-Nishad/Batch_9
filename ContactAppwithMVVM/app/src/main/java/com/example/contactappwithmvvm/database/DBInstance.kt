@@ -6,7 +6,7 @@ import com.example.contactappwithmvvm.DB_NAME
 
 object DBInstance {
 
-    var dbInstance: ContactAppDatabase? = null
+    private var dbInstance: ContactAppDatabase? = null
     fun getInstance(context: Context): ContactAppDatabase {
         synchronized(this) { // sync and lock kyunki we want that agar isne object le rakha
             // hai toh nobody else will receive a copy of the object

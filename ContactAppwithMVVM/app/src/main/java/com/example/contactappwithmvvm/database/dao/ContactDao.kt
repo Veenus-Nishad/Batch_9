@@ -19,6 +19,6 @@ interface ContactDao {
     fun getAllContacts(): Flow<List<Contact>>
 
     @Query("SELECT * FROM contact_table WHERE name = :name AND number = :number")
-    suspend fun isContactAlreadyExisting(name: String, number: String): List<Contact>
+    fun isContactAlreadyExisting(name: String, number: String): List<Contact>
 
 }

@@ -90,7 +90,7 @@ fun HomeScreenUI(
                     IconButton(onClick = { }) {
                         Image(imageVector = Icons.Filled.Search, contentDescription = "Search")
                     }
-                    IconButton(onClick = { navController.navigate(AddEditScreen) }) {
+                    IconButton(onClick = { navController.navigate(AddEditScreen(it.id)) }) {
                         Image(imageVector = Icons.Filled.Add, contentDescription = "Add")
                     }
                     IconButton(onClick = { expandedDropDownState = !expandedDropDownState }) {

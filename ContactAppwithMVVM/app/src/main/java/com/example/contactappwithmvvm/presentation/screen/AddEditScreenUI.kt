@@ -1,5 +1,7 @@
 package com.example.contactappwithmvvm.presentation.screen
 
+import android.util.Patterns
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,21 +20,26 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.contactappwithmvvm.database.tables.Contact
 import com.example.contactappwithmvvm.viewmodel.ContactAppViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
-fun     AddEditScreenUI(navController: NavController, viewModel: ContactAppViewModel, id: Int?) {
+fun AddEditScreenUI(navController: NavController, viewModel: ContactAppViewModel, id: Int?) {
 
     var name by rememberSaveable {
         mutableStateOf("")
@@ -43,6 +50,11 @@ fun     AddEditScreenUI(navController: NavController, viewModel: ContactAppViewM
     var email by rememberSaveable {
         mutableStateOf("")
     }
+
+    val context = LocalContext.current
+
+    val customCoroutine = rememberCoroutineScope()
+
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -91,11 +103,27 @@ fun     AddEditScreenUI(navController: NavController, viewModel: ContactAppViewM
         )
         Spacer(modifier = Modifier.height(15.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+            val isContactAlreadyExisting by viewModel.isContactAlreadyExisting(
+                name,
+                number
+            ).collectAsState(initial = false)
             Button(onClick = {
+                if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    customCoroutine.launch(Dispatchers.IO) {
 
-                val contact = Contact(id=id,name = name, number = number, email = email)
-                viewModel.addUpdateContact(contact)
-                navController.navigateUp()
+                        if (isContactAlreadyExisting) {
+                            Toast.makeText(context, "This name already exist", Toast.LENGTH_LONG)
+                                .show()
+                        } else {
+                            val contact =
+                                Contact(id = id, name = name, number = number, email = email)
+                            viewModel.addUpdateContact(contact)
+                            navController.navigateUp()
+                        }
+                    }
+                } else {
+                    Toast.makeText(context, "Email is not valid", Toast.LENGTH_LONG).show()
+                }
 
 
             }) {

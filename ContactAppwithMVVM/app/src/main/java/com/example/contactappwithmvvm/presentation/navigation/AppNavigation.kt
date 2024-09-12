@@ -18,7 +18,7 @@ fun AppNavigation(modifier: Modifier=Modifier,viewModel: ContactAppViewModel){
             HomeScreenUI(navController,viewModel)
         }
         composable<AddEditScreen>{
-            val addEditScreen=it.toRoute<AddEditScreen >() // ye id lene ke liye
+            val addEditScreen=it.toRoute<AddEditScreen>() // ye id lene ke liye
             AddEditScreenUI(navController,viewModel,addEditScreen.id)
         }
 

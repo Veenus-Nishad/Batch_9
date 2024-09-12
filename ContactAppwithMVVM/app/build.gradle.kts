@@ -86,7 +86,7 @@ dependencies {
     implementation("androidx.room:room-ktx:$room_version")
 
     //Serializable
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
+    implementation(libs.kotlinx.serialization.json)
 
     //navigation
     val nav_version = "2.8.0"

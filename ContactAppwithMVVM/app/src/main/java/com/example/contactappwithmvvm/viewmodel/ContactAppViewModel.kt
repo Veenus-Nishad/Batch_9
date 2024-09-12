@@ -6,6 +6,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.contactappwithmvvm.database.ContactAppDatabase
 import com.example.contactappwithmvvm.database.DBInstance
 import com.example.contactappwithmvvm.database.tables.Contact
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 /*
@@ -35,6 +39,14 @@ class ContactAppViewModel(
         viewModelScope.launch {
             db.contactDao().deleteContacts(contact)
         }
+    }
+
+    fun isContactAlreadyExisting(name: String, number: String): StateFlow<Boolean> {
+        val stateFlow = MutableStateFlow(false)
+        viewModelScope.launch {
+            stateFlow.value = db.contactDao().isContactAlreadyExisting(name, number).isNotEmpty()
+        }
+        return stateFlow
     }
 
     /*
