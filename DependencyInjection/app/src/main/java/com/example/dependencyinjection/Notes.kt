@@ -37,3 +37,8 @@ class AnalyticsAdapter @Inject constructor(
 }
 */
 
+/*
+ @InstallIn(SingletonComponent::class) ye tab use karte hai jab hum chahte hai ki jitni der meri app
+ run karegi utni der meri hilt ka module exist karega
+ Vaise hi ActivityComponent::class hota hai vo activity lifecycle ke according chalega
+*/
