@@ -56,6 +56,7 @@ fun AddEditScreenUI(navController: NavController, viewModel: ContactAppViewModel
     val customCoroutine = rememberCoroutineScope()
 
 
+
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -109,17 +110,19 @@ fun AddEditScreenUI(navController: NavController, viewModel: ContactAppViewModel
             ).collectAsState(initial = false)
             Button(onClick = {
                 if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    customCoroutine.launch(Dispatchers.IO) {
 
-                        if (isContactAlreadyExisting) {
-                            Toast.makeText(context, "This name already exist", Toast.LENGTH_LONG)
-                                .show()
-                        } else {
+
+                    if (isContactAlreadyExisting) {
+                        Toast.makeText(context, "This name already exist", Toast.LENGTH_LONG)
+                            .show()
+                    } else {
+                        customCoroutine.launch(Dispatchers.IO) {
                             val contact =
-                                Contact(id = id, name = name, number = number, email = email)
+                                Contact(name = name, number = number, email = email)
                             viewModel.addUpdateContact(contact)
-                            navController.navigateUp()
                         }
+                            navController.popBackStack()
+
                     }
                 } else {
                     Toast.makeText(context, "Email is not valid", Toast.LENGTH_LONG).show()

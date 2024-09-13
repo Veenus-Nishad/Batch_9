@@ -2,15 +2,20 @@ package com.example.contactappwithmvvm.presentation.screen
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Email
@@ -34,7 +39,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -63,6 +70,10 @@ fun HomeScreenUI(
 
     var expandedCardIndex by remember { mutableStateOf<Int?>(null) }
 
+    var getContactById by remember {
+            mutableStateOf(null)
+    }
+
     val context = LocalContext.current
 
     // jetpack Compose mein composable ka bhi ek coroutine hota hai
@@ -90,7 +101,7 @@ fun HomeScreenUI(
                     IconButton(onClick = { }) {
                         Image(imageVector = Icons.Filled.Search, contentDescription = "Search")
                     }
-                    IconButton(onClick = { navController.navigate(AddEditScreen(it.id)) }) {
+                    IconButton(onClick = { navController.navigate(AddEditScreen(id=-0)) }) {
                         Image(imageVector = Icons.Filled.Add, contentDescription = "Add")
                     }
                     IconButton(onClick = { expandedDropDownState = !expandedDropDownState }) {
@@ -119,22 +130,39 @@ fun HomeScreenUI(
                     var isExpanded = expandedCardIndex == contact.id
                     Card(
                         modifier = Modifier
-                            .padding(10.dp)
+                            .fillParentMaxWidth()
+                            .padding(16.dp)
                             .fillMaxHeight()
                             .clickable { expandedCardIndex = if (isExpanded) null else contact.id }
                     ) {
 
                         Column(
-                            modifier = Modifier.fillMaxSize()
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(text = contact.name)
+                            Row(modifier=Modifier
+                                .size(64.dp)  // Circular profile image size
+                                .padding(8.dp)  // Spacing between the icon and text
+                                .clip(CircleShape)  // Ensures it's a circular image
+                                .background(Color.Gray)
+
+                            ){ Icon(imageVector = Icons.Filled.Face, contentDescription ="Profile Icon" )
+                                Text(modifier = Modifier
+                                    .padding(start = 8.dp)  // Padding to the left of the text
+                                    .align(Alignment.CenterVertically)  // Align the text centrally with the profile icon
+                                    , text = contact.name)}
                             if (isExpanded) {
-                                Text(text = "Mobile +91 ${contact.number}")
+                                Text(modifier = Modifier
+                                    .padding(start = 8.dp, top = 4.dp)  // Padding with slight vertical space
+                                    ,text = "Mobile +91 ${contact.number}")
                                 Text(text = "Email ${contact.email}")
                                 Row {
                                     Icon(imageVector = Icons.Filled.Phone, contentDescription ="Call" )
+                                    Spacer(modifier = Modifier.width(20.dp))
                                     Icon(imageVector = Icons.Filled.Email, contentDescription ="Email" )
+                                    Spacer(modifier = Modifier.width(20.dp))
                                     Icon(imageVector = Icons.Filled.Face, contentDescription ="Video Call" )
+                                    Spacer(modifier = Modifier.width(20.dp))
                                     Icon(imageVector = Icons.Filled.Info, contentDescription ="More Info" )
                                 }
                             }

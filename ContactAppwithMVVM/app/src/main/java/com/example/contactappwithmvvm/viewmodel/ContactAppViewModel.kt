@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.contactappwithmvvm.database.ContactAppDatabase
 import com.example.contactappwithmvvm.database.DBInstance
 import com.example.contactappwithmvvm.database.tables.Contact
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,7 +44,7 @@ class ContactAppViewModel(
 
     fun isContactAlreadyExisting(name: String, number: String): StateFlow<Boolean> {
         val stateFlow = MutableStateFlow(false)
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             stateFlow.value = db.contactDao().isContactAlreadyExisting(name, number).isNotEmpty()
         }
         return stateFlow
