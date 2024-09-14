@@ -9,6 +9,7 @@ data class Contact (
     var name:String,
     var number:String,
     var email:String,
+    val isDeleted: Boolean = false
 //    var image:ByteArray,
 //    var DOB:Long
 )

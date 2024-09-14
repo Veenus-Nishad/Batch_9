@@ -11,7 +11,7 @@ import com.example.contactappwithmvvm.database.tables.Contact
 /*
  jo table bani hai ultimately agar unko access/download karna chahte ho toh exportSchema = true
 */
-@Database(entities = [Contact::class], version = 1, exportSchema = false)
+@Database(entities = [Contact::class], version = 2, exportSchema = false)
 abstract class ContactAppDatabase : RoomDatabase() {
     abstract fun contactDao(): ContactDao
 

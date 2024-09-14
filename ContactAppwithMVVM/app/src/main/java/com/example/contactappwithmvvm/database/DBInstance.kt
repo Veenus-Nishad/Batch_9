@@ -14,7 +14,7 @@ object DBInstance {
                 dbInstance =
                     Room.databaseBuilder(
                         context, ContactAppDatabase::class.java, DB_NAME
-                    ).build()
+                    ).addMigrations(MIGRATION_1_2).build()
             }
         }
         /*

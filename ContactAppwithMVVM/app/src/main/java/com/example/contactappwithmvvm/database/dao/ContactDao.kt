@@ -13,12 +13,27 @@ interface ContactDao {
     suspend fun upsertContact(contact: Contact)
 
     @Delete
-    suspend fun deleteContacts(contacts: List<Contact>) // can delete multiple now
+    suspend fun deleteContactsPermanently(contacts: List<Contact>) // can delete multiple now
 
     @Query("SELECT * FROM contact_table")
     fun getAllContacts(): Flow<List<Contact>>
 
     @Query("SELECT * FROM contact_table WHERE name = :name AND number = :number")
     fun isContactAlreadyExisting(name: String, number: String): List<Contact>
+
+    // Function to get all deleted contact_table
+    @Query("SELECT * FROM contact_table WHERE isDeleted = 1")
+    fun getDeletedContacts(): Flow<List<Contact>>
+
+    // Function to update the isDeleted status of a contact
+    @Query("UPDATE contact_table SET isDeleted = 1 WHERE id = :contactId")
+    suspend fun deleteContact(contactId: Int)
+
+    // Function to restore a deleted contact
+    @Query("UPDATE contact_table SET isDeleted = 0 WHERE id = :contactId")
+    suspend fun restoreContact(contactId: Int)
+
+    @Query("SELECT * FROM contact_table WHERE id = :id")
+    fun getContactById(id: Int): Contact
 
 }

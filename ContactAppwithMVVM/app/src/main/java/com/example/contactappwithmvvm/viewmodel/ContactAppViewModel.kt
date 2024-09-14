@@ -36,10 +36,31 @@ class ContactAppViewModel(
         }
     }
 
-    fun deleteContact(contact:List<Contact>){
+    fun deleteContactsPermanently(contact:List<Contact>){
         viewModelScope.launch {
-            db.contactDao().deleteContacts(contact)
+            db.contactDao().deleteContactsPermanently(contact)
         }
+    }
+
+    // Function to mark contact as deleted
+    fun deleteContact(contactId: Int) {
+        viewModelScope.launch {
+            db.contactDao().deleteContact(contactId)
+        }
+    }
+
+    // Function to restore a deleted contact
+    fun restoreContact(contactId: Int) {
+        viewModelScope.launch {
+            db.contactDao().restoreContact(contactId)
+        }
+    }
+
+    fun getContactById(contactId:Int){
+        viewModelScope.launch(Dispatchers.IO) {
+            db.contactDao().getContactById(contactId)
+        }
+
     }
 
     fun isContactAlreadyExisting(name: String, number: String): StateFlow<Boolean> {
