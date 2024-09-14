@@ -33,7 +33,7 @@ interface ContactDao {
     @Query("UPDATE contact_table SET isDeleted = 0 WHERE id = :contactId")
     suspend fun restoreContact(contactId: Int)
 
-    @Query("SELECT * FROM contact_table WHERE id = :id")
-    fun getContactById(id: Int): Contact
+    @Query("SELECT number FROM contact_table WHERE id = :contactId LIMIT 1")
+    fun getContactNumberById(contactId: Int): Flow<String>
 
 }

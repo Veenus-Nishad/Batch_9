@@ -71,6 +71,18 @@ class ContactAppViewModel(
         return stateFlow
     }
 
+    // MutableStateFlow to hold the fetched contact number
+    private val _contactNumber = MutableStateFlow<String?>(null)
+    val contactNumber: StateFlow<String?> = _contactNumber
+
+    // Function to fetch the contact number by ID
+    fun getContactNumberById(contactId: Int) {
+        viewModelScope.launch {
+            db.contactDao().getContactNumberById(contactId).collect { number ->
+                _contactNumber.value = number
+            }
+        }
+    }
     /*
         READ KARNE KE LIYE FUNCTIONS NAHI BANTE HAI AS FLOW AUTOMATICALLY NAYA DATA DE DETA HAI BUT
         USKE LIYE BHI EVENT AUR STATE BANANE PADTE HAI
