@@ -4,11 +4,13 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
-@Module
-@InstallIn(SingletonComponent::class)
-object HiltModule {
-    fun provideEngine(): Engine {
-        return Engine()
+//@Module
+//@InstallIn(SingletonComponent::class)
+//object HiltModule {
+//    fun provideEngine(): Engine {
+//        return Engine()
+//
+//    }
+//}
 
-    }
-}
+//Step 2

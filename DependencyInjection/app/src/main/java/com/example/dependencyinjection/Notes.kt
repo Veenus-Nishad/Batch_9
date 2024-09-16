@@ -2,14 +2,18 @@ package com.example.dependencyinjection
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
+/*
+ Saves the code of object creation using @Inject
+* */
 
-
-//1-> All apps that use Hilt must contain an Application class that is annotated
+//Step 1-> All apps that use Hilt must contain an Application/Base class that is annotated
 // with @HiltAndroidApp.
 //@HiltAndroidApp triggers Hilt's code generation, including a base class for your
 // application that serves as the application-level dependency container.
-@HiltAndroidApp
-class ExampleApplication : Application() {  }
+// agar base class hain app mein toh sabse pehle vo run hogi than Main then rest
+
+//@HiltAndroidApp
+//class ExampleApplication : Application() {  }
 
 //2 -> Once Hilt is set up in your Application class and an application-level component
 // is available, Hilt can provide dependencies to other Android classes that have the
@@ -25,7 +29,7 @@ class AnalyticsAdapter @Inject constructor(
 ) { ... }
 */
 
-// 2.Create HiltModule
+// Step 2.Create HiltModule
 /*
     @Module
     @InstallIn(SingletonComponent::class)
