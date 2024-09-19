@@ -22,7 +22,7 @@ object DIModule {
             application,
             ContactDatabase::class.java,
             DB_NAME
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 
     @Provides

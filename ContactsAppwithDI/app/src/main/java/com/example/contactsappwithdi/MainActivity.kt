@@ -36,8 +36,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ContactsAppwithDITheme {
-            Scaffold(modifier = Modifier.fillMaxSize()) {
-                Column(modifier = Modifier.padding(it)){
+            Scaffold(modifier = Modifier.fillMaxSize()) {innerPadding->
+                Column(modifier = Modifier.padding(innerPadding)){
                     AppNavigation( )
                 }
             }

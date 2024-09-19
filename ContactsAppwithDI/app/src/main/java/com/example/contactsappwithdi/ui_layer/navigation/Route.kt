@@ -6,4 +6,4 @@ import kotlinx.serialization.Serializable
 object HomeScreen
 
 @Serializable
-data class AddEditScreen(val id: Int? = null)
+object AddEditScreen

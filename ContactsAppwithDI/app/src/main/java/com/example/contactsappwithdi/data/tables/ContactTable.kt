@@ -9,6 +9,9 @@ data class Contact(
     val name: String,
     val phoneNumber: String,
     val email: String,
-//    val image:ByteArray,
-//    val DOB:Long
+    val DOB:Long?=null,
+    val image:ByteArray?=null
 )
+
+
+// Blob ka sql equivalent hai ByteArray

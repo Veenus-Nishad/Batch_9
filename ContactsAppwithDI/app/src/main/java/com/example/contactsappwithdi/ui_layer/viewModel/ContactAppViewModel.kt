@@ -34,7 +34,7 @@ class ContactAppViewModel @Inject constructor(
         _state.copy(contactList = contactList)
     }.stateIn(
         viewModelScope,
-        SharingStarted.WhileSubscribed(),
+        SharingStarted.WhileSubscribed(5000),
         ContactState()
     )
 
@@ -42,11 +42,26 @@ class ContactAppViewModel @Inject constructor(
         viewModelScope.launch{
             repository.upsertContact(
                 Contact(
+                    id=state.value.id.value,
                     name = state.value.name.value,
                     phoneNumber = state.value.phoneNumber.value,
-                    email = state.value.email.value
+                    email = state.value.email.value,
+                    DOB=state.value.dob.value,
+                    image=state.value.image.value
                 )
             )
+        }
+    }
+
+    fun deleteContact(){
+        val contact=Contact(
+            id=state.value.id.value,
+            name = state.value.name.value,
+            phoneNumber = state.value.phoneNumber.value,
+            email = state.value.email.value
+        )
+        viewModelScope.launch {
+            repository.deleteContact(contact)
         }
     }
 }

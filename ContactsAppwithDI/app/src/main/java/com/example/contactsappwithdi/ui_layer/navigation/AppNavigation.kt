@@ -17,7 +17,6 @@ fun  AppNavigation() {
                 HomeScreenUI(navController = navController)
             }
             composable<AddEditScreen>{
-                val addEditScreen =  { AddEditScreen() }
                 AddEditScreenUI(navController)
             }
         }
