@@ -6,4 +6,7 @@ import kotlinx.serialization.Serializable
 object HomeScreen
 
 @Serializable
-object AddEditScreen
+data class AddEditScreen(val contactId: Int? = null) // Accept an optional contact ID
+
+@Serializable
+data class MoreInfoScreen(val contactId: Int)

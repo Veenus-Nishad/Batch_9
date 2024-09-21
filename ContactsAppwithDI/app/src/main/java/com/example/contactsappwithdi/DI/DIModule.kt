@@ -28,7 +28,7 @@ object DIModule {
     @Provides
     @Singleton
     fun provideContactRepository(contactDatabase: ContactDatabase): Repository {
-        return Repository(contactDatabase   )
+        return Repository(contactDatabase)
 
     }
 }

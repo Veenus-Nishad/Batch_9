@@ -1,23 +1,32 @@
 package com.example.contactsappwithdi.ui_layer.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.collectAsState
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.contactsappwithdi.ui_layer.screen.AddEditScreenUI
 import com.example.contactsappwithdi.ui_layer.screen.HomeScreenUI
+import com.example.contactsappwithdi.ui_layer.screen.MoreInfoScreenUI
 import com.example.contactsappwithdi.ui_layer.viewModel.ContactAppViewModel
 
 @Composable
-fun  AppNavigation() {
+fun  AppNavigation(viewModel: ContactAppViewModel = hiltViewModel()) {
         val navController = rememberNavController()
+        val state  = viewModel.state.collectAsState()
         NavHost(navController = navController, startDestination = HomeScreen) {
             composable<HomeScreen>{
-                HomeScreenUI(navController = navController)
+                HomeScreenUI(navController = navController,state=state.value,viewModel = viewModel)
             }
-            composable<AddEditScreen>{
-                AddEditScreenUI(navController)
+            composable<AddEditScreen>{backStackEntry ->
+                val contactId = backStackEntry.arguments?.getInt("contactId")
+                AddEditScreenUI(navController = navController  , state = state.value, contactId = contactId,
+                    onEvent = { viewModel.upsertContact() })
+            }
+            composable<MoreInfoScreen>{backStackEntry ->
+                val contactId = backStackEntry.arguments?.getInt("contactId")
+                MoreInfoScreenUI(navController = navController,contactId = contactId!!,state = state.value)
             }
         }
 }

@@ -1,5 +1,6 @@
 package com.example.contactsappwithdi.ui_layer.viewModel
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.contactsappwithdi.data.repository.Repository
@@ -37,6 +38,30 @@ class ContactAppViewModel @Inject constructor(
         SharingStarted.WhileSubscribed(5000),
         ContactState()
     )
+
+    // Function to set the selected contact details in the state
+    fun selectContact(contact: Contact) {
+        _state.value = _state.value.copy(
+            id = mutableStateOf(contact.id),
+            name = mutableStateOf(contact.name),
+            phoneNumber = mutableStateOf(contact.phoneNumber),
+            email = mutableStateOf(contact.email),
+            dob = mutableStateOf(contact.DOB),
+            image = mutableStateOf(contact.image)
+        )
+    }
+
+    // Function to clear contact state before adding a new contact
+    fun clearContactState() {
+        _state.value = _state.value.copy(
+            id = mutableStateOf(null),
+            name = mutableStateOf(""),
+            phoneNumber = mutableStateOf(""),
+            email = mutableStateOf(""),
+            dob = mutableStateOf(0),
+            image = mutableStateOf(null)
+        )
+    }
 
      fun upsertContact() {
         viewModelScope.launch{
