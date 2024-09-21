@@ -6,6 +6,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.example.contactsappwithdi.ui_layer.screen.AddEditScreenUI
 import com.example.contactsappwithdi.ui_layer.screen.HomeScreenUI
 import com.example.contactsappwithdi.ui_layer.screen.MoreInfoScreenUI
@@ -20,12 +21,12 @@ fun  AppNavigation(viewModel: ContactAppViewModel = hiltViewModel()) {
                 HomeScreenUI(navController = navController,state=state.value,viewModel = viewModel)
             }
             composable<AddEditScreen>{backStackEntry ->
-                val contactId = backStackEntry.arguments?.getInt("contactId")
+                val contactId :AddEditScreen = backStackEntry.toRoute()
                 AddEditScreenUI(navController = navController  , state = state.value, contactId = contactId,
                     onEvent = { viewModel.upsertContact() })
             }
             composable<MoreInfoScreen>{backStackEntry ->
-                val contactId = backStackEntry.arguments?.getInt("contactId")
+                val contactId : MoreInfoScreen = backStackEntry.toRoute()
                 MoreInfoScreenUI(navController = navController,contactId = contactId!!,state = state.value)
             }
         }

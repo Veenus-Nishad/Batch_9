@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.contactsappwithdi.R
+import com.example.contactsappwithdi.ui_layer.navigation.AddEditScreen
 import com.example.contactsappwithdi.ui_layer.state.ContactState
 import com.example.contactsappwithdi.ui_layer.viewModel.ContactAppViewModel
 
@@ -44,7 +45,7 @@ fun AddEditScreenUI(
     viewModel: ContactAppViewModel = hiltViewModel(),
     state: ContactState,
     onEvent: () -> Unit,
-    contactId: Int?
+    contactId: AddEditScreen?
 ) {
     val context = LocalContext.current
     // Find the contact by ID, if present
@@ -60,9 +61,9 @@ fun AddEditScreenUI(
             }
         }
     val contact = contactId?.let { id ->
-        state.contactList.find { it.id == id }
+        state.contactList.find { it.id == id.contactId }
     }
-    contact?.let {
+
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Spacer(modifier = Modifier.height(22.dp))
             if (state.image.value == null) {
@@ -174,7 +175,7 @@ fun AddEditScreenUI(
                 }
             }
         }
-    } ?: Text(text = "Editing new")
+
 
 
 }

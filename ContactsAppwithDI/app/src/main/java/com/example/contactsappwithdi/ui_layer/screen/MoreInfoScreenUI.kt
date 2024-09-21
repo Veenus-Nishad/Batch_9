@@ -44,6 +44,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.contactsappwithdi.R
 import com.example.contactsappwithdi.ui_layer.navigation.AddEditScreen
+import com.example.contactsappwithdi.ui_layer.navigation.MoreInfoScreen
 import com.example.contactsappwithdi.ui_layer.state.ContactState
 import com.example.contactsappwithdi.ui_layer.viewModel.ContactAppViewModel
 
@@ -52,14 +53,14 @@ import com.example.contactsappwithdi.ui_layer.viewModel.ContactAppViewModel
 fun MoreInfoScreenUI(
     navController: NavController,
     viewModel: ContactAppViewModel = hiltViewModel(),
-    contactId: Int,
+    contactId: MoreInfoScreen,
     state: ContactState
 ) {
     // Fetch the contact details using the contactId
-    val contact = state.contactList.find { it.id == contactId }
+    val contact = state.contactList.find { it.id == contactId.contactId }
     Scaffold(topBar = {
         TopAppBar(title = { /*TODO*/ }, navigationIcon = {
-            IconButton(onClick = {}) {
+            IconButton(onClick = {navController.popBackStack()}) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, "backIcon")
             }
         })

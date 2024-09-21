@@ -2,7 +2,6 @@ package com.example.contactsappwithdi.ui_layer.screen
 
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -32,7 +31,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -74,13 +72,14 @@ fun HomeScreenUI(
     Scaffold(topBar = {
         TopAppBar(
             title = { Text(text = "Contact") },
-            actions = { Icon(imageVector = Icons.Default.Add, contentDescription = "null") })
-    }, floatingActionButton = {
-        FloatingActionButton(onClick = {
-            navController.navigate(AddEditScreen)
-        }) {
-            Icon(imageVector = Icons.Default.Add, contentDescription = "null")
-        }
+            actions = {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "null",
+                    modifier = Modifier.clickable {
+                        navController.navigate(AddEditScreen(contactId = -1))
+                    })
+            })
     }) { innerPadding ->
         LazyColumn(modifier = Modifier.padding(innerPadding)) {
             items(state.contactList) { contact ->
