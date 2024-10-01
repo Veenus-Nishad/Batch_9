@@ -20,3 +20,20 @@ def createUser(name, password, phone_number, email,pinCode, address):
     conn.close()
 
     return user_id  # Return the generated user ID
+
+
+def addProduct(name,price,stock,expiry_date,category):
+    conn = sqlite3.connect("my_medical.db")
+    cursor = conn.cursor()
+
+    product_id = str(uuid.uuid4())  # Generate a unique product ID
+    cursor.execute(""" 
+    INSERT INTO Products (
+       product_id, name, price, stock, expiry_date, category
+    ) VALUES (?,?, ?, ?, ?, ?)
+    """, (product_id, name, price, stock, expiry_date, category))
+
+    conn.commit()
+    conn.close()
+
+    return product_id

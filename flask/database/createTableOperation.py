@@ -1,7 +1,7 @@
 import sqlite3
 
 def createTable():
-    conn = sqlite3.connect("my_medical.db")
+    conn = sqlite3.connect("my_medical.db") # Connect to the database
     cursor = conn.cursor()
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS Users(
@@ -22,3 +22,20 @@ def createTable():
     conn.commit()  # Don't forget to commit the transaction
     conn.close()
  
+
+def createProductTable():
+    conn=sqlite3.connect("my_medical.db")
+    cursor=conn.cursor()
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Products(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        product_id VARCHAR(255),
+        name VARCHAR(255),
+        price INTEGER,
+        stock INTEGER,
+        expiry_date DATE,
+        category VARCHAR(255)
+    );
+    ''')
+    conn.commit()
+    conn.close()
