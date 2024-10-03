@@ -15,6 +15,13 @@ interface ContactDao {
     @Delete
     suspend fun deleteContact(contact: Contact)
 
-    @Query("SELECT * FROM contact_table")
+    @Query("SELECT * FROM contact_table WHERE isDeleted=0")
     fun getAllContact(): Flow<List<Contact>>
+
+    @Query("SELECT * FROM contact_table WHERE isFavorite = 1")
+    fun favoriteContacts():Flow<List<Contact>>
+
+    @Query("SELECT * FROM contact_table WHERE isDeleted = 1")
+    fun deletedContacts():Flow<List<Contact>>
+
 }

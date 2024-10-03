@@ -4,6 +4,7 @@ import android.graphics.BitmapFactory
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,6 +29,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -64,7 +66,7 @@ fun AddEditScreenUI(
         state.contactList.find { it.id == id.contactId }
     }
 
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(modifier=Modifier.background(color = Color(0xFFf6f6f8)), horizontalAlignment = Alignment.CenterHorizontally) {
             Spacer(modifier = Modifier.height(22.dp))
             if (state.image.value == null) {
                 Image(painter = painterResource(id = R.drawable.ic_launcher_foreground),

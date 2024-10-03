@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -22,6 +23,19 @@ class ContactAppViewModel @Inject constructor(
 
     private val contactList = repository.getAllContact()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+
+    fun toggleFavorite(contact: Contact) {
+        val updatedContact = contact.copy(isFavorite = !contact.isFavorite!!)
+        viewModelScope.launch {
+            repository.upsertContact(updatedContact)
+        }}
+
+    fun recycleBin(contact:Contact){
+        val updatedContact=contact.copy(isDeleted = !contact.isDeleted!!)
+        viewModelScope.launch {
+            repository.upsertContact(updatedContact)
+        }
+    }
 
     private val _state =
         MutableStateFlow(ContactState()) // jo data class banai uski state manage karne ke liye
@@ -89,6 +103,8 @@ class ContactAppViewModel @Inject constructor(
             repository.deleteContact(contact)
         }
     }
+
+
 }
 
 // Flow ke emission ko receive karenge , Flow emission refers to the process of a Flow producing a new

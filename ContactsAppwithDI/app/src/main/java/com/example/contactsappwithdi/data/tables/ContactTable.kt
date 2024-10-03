@@ -10,7 +10,9 @@ data class Contact(
     val phoneNumber: String,
     val email: String,
     val DOB:Long?=null,
-    val image:ByteArray?=null
+    val image:ByteArray?=null,
+    val isFavorite: Boolean? = false,
+    val isDeleted:Boolean?=false
 )
 
 

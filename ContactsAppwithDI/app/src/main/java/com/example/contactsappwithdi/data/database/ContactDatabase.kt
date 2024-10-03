@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.example.contactsappwithdi.data.dao.ContactDao
 import com.example.contactsappwithdi.data.tables.Contact
 
-@Database(entities = [Contact::class], version = 2, exportSchema = false)
+@Database(entities = [Contact::class], version = 5, exportSchema = false)
 abstract class ContactDatabase: RoomDatabase() {
     abstract fun contactDao(): ContactDao
 
