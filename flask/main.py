@@ -3,7 +3,7 @@ from database.createTableOperation import createTable
 from database.addOperation import createUser,addProduct
 from database.readOperation import getAllUsers,getAllProducts,getSpecificUser
 from database.auth import user_auth
-from database.updateOperation import updateUserName
+from database.updateOperation import updateUserAllFields
  
 app = Flask(__name__)
 
@@ -11,7 +11,7 @@ app = Flask(__name__)
 def home(): 
     return "Jai Ho API ki"
 
-@app.route('/signUp', methods=['POST'])
+@app.route('/signUp', methods=['POST']) 
 def signUp():
     name=request.form['name']
     password = request.form['password']  # You need to extract password from the form
@@ -66,9 +66,16 @@ def getSpecificUserMain():
 def updateUserNameMain():
     try:
         userID = request.form['userID']
-        newName = request.form['newName']
-        update =updateUserName(newName=newName,userID= userID)
-        return jsonify({"status ":200,"message": update})
+        allFields=request.form.items()
+        updateUser={}
+
+        for key , value in allFields:
+            if key != "userID":
+                updateUser[key]=value
+        updateUserAllFields(userID=userID,**updateUser)
+
+    
+        return jsonify({"status ":200,"message": "Updated"})
     except Exception as e:
         return jsonify({"status ":400,"message": str(e)})
 
