@@ -1,9 +1,10 @@
 from flask import Flask, jsonify, request
-from database.createTableOperation import createTable,createProductTable
+from database.createTableOperation import createTable
 from database.addOperation import createUser,addProduct
-from database.readOperation import getAllUsers,getAllProducts
-from auth import user_auth
-
+from database.readOperation import getAllUsers,getAllProducts,getSpecificUser
+from database.auth import user_auth
+from database.updateOperation import updateUserName
+ 
 app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
@@ -28,12 +29,12 @@ def getAllUser():
     data = getAllUsers()
     return data
 
-@app.route('/ ', methods=['POST'])
+@app.route('/login', methods=['POST'])
 def login():
     email = request.form['email']
     password = request.form['password']
     data = user_auth(email, password)
-    return data
+    return jsonify({"user_id":data[1]})
 
 @app.route("/addProducts", methods=["POST"])
 def addProducts():
@@ -51,7 +52,27 @@ def getProducts():
     data = getAllProducts()
     return data
 
+@app.route("/getSpecificUser",methods=["POST"]) # kyunkii pehele user server ko bataenge gi kiska lana hai 
+def getSpecificUserMain():
+    try:
+        userID = request.form['userID']
+        data = getSpecificUser(userID)
+        return data 
+    except Exception as e:
+        return jsonify({"status ":400,"message": str(e)})
+    
+
+@app.route("/updateUserName", methods=["PATCH"])
+def updateUserNameMain():
+    try:
+        userID = request.form['userID']
+        newName = request.form['newName']
+        update =updateUserName(newName=newName,userID= userID)
+        return jsonify({"status ":200,"message": update})
+    except Exception as e:
+        return jsonify({"status ":400,"message": str(e)})
+
 if __name__ == "__main__":
     createTable() 
-    createProductTable()
     app.run(debug=True)
+ 

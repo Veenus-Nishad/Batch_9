@@ -1,5 +1,5 @@
 import sqlite3
-import json
+
 
 def user_auth(email,password):
   conn = sqlite3.connect("my_medical.db")
@@ -7,4 +7,4 @@ def user_auth(email,password):
   cursor.execute("SELECT * FROM Users WHERE email = ? AND password = ?", (email, password))
   user = cursor.fetchone()
   conn.close()
-  return json.dumps(user)  
+  return user    

@@ -21,9 +21,8 @@ def createTable():
     ''')
     conn.commit()  # Don't forget to commit the transaction
     conn.close()
- 
 
-def createProductTable():
+    # table for products
     conn=sqlite3.connect("my_medical.db")
     cursor=conn.cursor()
     cursor.execute('''
