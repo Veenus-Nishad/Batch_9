@@ -26,3 +26,14 @@ def updateUserAllFields (userID,**keyword):
   conn.commit()
   conn.close()
 
+def updateOrderAllFields (orderID,**keyword):
+  conn= sqlite3.connect("my_medical.db")
+  cursor=conn.cursor()
+
+  for key , value in keyword.items():
+    if key == "quantity":
+      cursor.execute("UPDATE Orders SET quantity = ? WHERE order_id = ?",(value,orderID))
+    
+
+
+

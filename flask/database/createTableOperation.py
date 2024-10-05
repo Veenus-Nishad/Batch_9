@@ -38,3 +38,20 @@ def createTable():
     ''')
     conn.commit()
     conn.close()
+
+    # table for orders
+    conn=sqlite3.connect("my_medical.db")
+    cursor=conn.cursor()
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Orders(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        order_id VARCHAR(255),
+        user_id VARCHAR(255),
+        product_id VARCHAR(255),
+        quantity INTEGER,
+        isApproved BOOLEAN,
+        date_of_order DATE
+    );
+    ''')
+    conn.commit()
+    conn.close()

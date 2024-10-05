@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from database.createTableOperation import createTable
-from database.addOperation import createUser,addProduct
-from database.readOperation import getAllUsers,getAllProducts,getSpecificUser
+from database.addOperation import createUser,addProduct,placeOrder
+from database.readOperation import getAllUsers,getAllProducts,getSpecificUser,getSpecificProduct,getSpecificUsersOrders,getSpecificProductsOrders
 from database.auth import user_auth
 from database.updateOperation import updateUserAllFields
  
@@ -73,6 +73,61 @@ def updateUserNameMain():
             if key != "userID":
                 updateUser[key]=value
         updateUserAllFields(userID=userID,**updateUser)
+
+    
+        return jsonify({"status ":200,"message": "Updated"})
+    except Exception as e:
+        return jsonify({"status ":400,"message": str(e)})
+    
+@app.route("/getSpecificProduct",methods=["GET"])
+def getSpecificProductMain():
+    try:
+        productID=request.form["productID"]
+        data = getSpecificProduct(productID)
+        return data
+    except Exception as e:
+        return jsonify({"status ":400,"message": str(e)})
+    
+@app.route("/placeOrder",methods=["POST"])
+def placeOrderMain():
+    try:
+        userID = request.form['userID']
+        productID = request.form['productID']
+        quantity = request.form['quantity']
+        placeOrder(user_id=userID,product_id=productID,quantity=quantity)
+        return jsonify({"status ":200,"message": "Order is Placed"})
+    except Exception as e:
+        return jsonify({"status ":400,"message": str(e)})
+
+@app.route("/userOrders",methods=["GET"])
+def userOrdersMain():
+    try:
+        userID = request.form['userID']
+        data=getSpecificUsersOrders(userID)
+        return jsonify({"status ":200,"message": f"Order's Placed by {userID} {data}"})
+    except Exception as e:
+        return jsonify({"status ":400,"message": str(e)})
+    
+@app.route("/productOrders",methods=["GET"])
+def productOrdersMain():
+    try:
+        productID = request.form['productID']
+        data=getSpecificProductsOrders(productID)
+        return jsonify({"status ":200,"message": f"Order's of Product {data}"})
+    except Exception as e:
+        return jsonify({"status ":400,"message": str(e)})
+
+@app.route("/updateOrder",methods=["PATCH"])
+def updateOrderMain():
+    try:
+        orderID = request.form['orderID']
+        allFields=request.form.items()
+        updateUser={}
+
+        for key , value in allFields:
+            if key != "orderID":
+                updateUser[key]=value
+        updateUserAllFields(orderID=orderID,**updateUser)
 
     
         return jsonify({"status ":200,"message": "Updated"})

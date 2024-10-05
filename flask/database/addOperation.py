@@ -37,3 +37,22 @@ def addProduct(name,price,stock,expiry_date,category):
     conn.close()
 
     return product_id
+
+
+# Function to create orders 
+def placeOrder(user_id, product_id, quantity):
+    conn=sqlite3.connect("my_medical.db")
+    cursor=conn.cursor()
+
+    order_id = str(uuid.uuid4())  # Generate a unique order ID
+    date_of_order = date.today()  # Get the  date of order
+    cursor.execute(""" 
+    INSERT INTO Orders (
+        order_id, user_id, product_id, quantity,isApproved,  date_of_order
+    ) VALUES (?, ?, ?, ?,?,?)
+    """, (order_id, user_id, product_id, quantity,1, date_of_order))
+
+    conn.commit()
+    conn.close()
+
+    return order_id
