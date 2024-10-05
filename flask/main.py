@@ -1,9 +1,9 @@
 from flask import Flask, jsonify, request
 from database.createTableOperation import createTable
-from database.addOperation import createUser,addProduct,placeOrder
+from database.addOperation import createUser,addProduct,placeOrder,vendorStock
 from database.readOperation import getAllUsers,getAllProducts,getSpecificUser,getSpecificProduct,getSpecificUsersOrders,getSpecificProductsOrders
 from database.auth import user_auth
-from database.updateOperation import updateUserAllFields
+from database.updateOperation import updateUserAllFields,consumedStock,updateOrderAllFields,addToStock,updateStockAddAtAdmin,updateStockConsumedAtAdmin
  
 app = Flask(__name__)
 
@@ -134,6 +134,62 @@ def updateOrderMain():
     except Exception as e:
         return jsonify({"status ":400,"message": str(e)})
 
+
+@app.route("/vendorStock",methods=["POST"]) 
+def vendorStockMain():
+    try:
+        vendorID = request.form['vendorID']
+        productID = request.form['productID']
+        stock = request.form['stock']
+        vendorStock(vendor_id=vendorID,product_id=productID,stock=stock)
+        return jsonify({"status ":200,"message": "Stock Confirmed"})
+    except Exception as e:
+        return jsonify({"status ":400,"message": str(e)})
+    
+@app.route("/consumedStock",methods=["PATCH"])
+def CustomerBoughtMain():
+    try:
+        vendorID = request.form['vendorID']
+        productID = request.form['productID']
+        quantity = request.form['quantity']
+        consumedStock(vendorID=vendorID,productID=productID,consumed=quantity)
+        return jsonify({"status ":200,"message": "Stock Updated"})
+    except Exception as e:
+        return jsonify({"status ":400,"message": str(e)})
+    
+@app.route("/addToStock",methods=["PATCH"])
+def vendorAddToStockMain():
+    try:
+        vendorID = request.form['vendorID']
+        productID = request.form['productID']
+        quantity = request.form['quantity']
+        addToStock(vendorID=vendorID,productID=productID,add=quantity)
+        return jsonify({"status ":200,"message": "Stock Updated"})
+    except Exception as e:
+        return jsonify({"status ":400,"message": str(e)})
+    
+@app.route("/updateStockConsumed",methods=["PATCH"])
+def adminStockConsumedMain():
+    try:
+        vendorID = request.form['vendorID']
+        productId=request.form['productID']
+        quantity = request.form['quantity']
+        updateStockConsumedAtAdmin(vendorID=vendorID,productID=productId,consumed=quantity)
+        return jsonify({"status ":200,"message": "Stock Updated"})
+    except Exception as e:
+        return jsonify({"status ":400,"message": str(e)})
+    
+@app.route("/updateStockAdd",methods=["PATCH"])
+def adminStockAddMain():
+    try:
+        vendorID = request.form['vendorID']
+        productId=request.form['productID']
+        quantity = request.form['quantity']
+        updateStockAddAtAdmin(vendorID=vendorID,productID=productId,add=quantity)
+        return jsonify({"status ":200,"message": "Stock Updated"})
+    except Exception as e:
+        return jsonify({"status ":400,"message": str(e)})
+        
 if __name__ == "__main__":
     createTable() 
     app.run(debug=True)

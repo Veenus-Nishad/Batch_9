@@ -48,7 +48,7 @@ def placeOrder(user_id, product_id, quantity):
     date_of_order = date.today()  # Get the  date of order
     cursor.execute(""" 
     INSERT INTO Orders (
-        order_id, user_id, product_id, quantity,isApproved,  date_of_order
+        order_id, vendor_id, product_id, quantity,isApproved,  date_of_order
     ) VALUES (?, ?, ?, ?,?,?)
     """, (order_id, user_id, product_id, quantity,1, date_of_order))
 
@@ -56,3 +56,16 @@ def placeOrder(user_id, product_id, quantity):
     conn.close()
 
     return order_id
+
+def vendorStock(vendor_id,product_id,stock):
+    conn=sqlite3.connect("my_medical.db")
+    cursor=conn.cursor()
+
+    cursor.execute(""" 
+    INSERT INTO VendorStock (
+        vendor_id, product_id, quantity
+    ) VALUES (?, ?, ?)
+    """, (vendor_id,product_id,stock))
+
+    conn.commit()
+    conn.close()

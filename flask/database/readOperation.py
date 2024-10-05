@@ -110,7 +110,7 @@ def getSpecificUsersOrders(userID):
 
   for order in orders:
     tempOrder={
-      "user_id": order[2],
+      "vendor_id": order[2],
       "order_id": order[1],
       "product_id": order[3],
       "quantity": order[4],
@@ -132,7 +132,7 @@ def getSpecificProductsOrders(productID):
 
   for order in orders:
     tempOrder={
-      "order_id": order[1],
+      "vendor_id": order[1],
       "user_id": order[2],
       "quantity": order[4],
       "isApproved": order[5],

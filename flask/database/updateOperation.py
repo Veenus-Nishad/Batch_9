@@ -33,7 +33,45 @@ def updateOrderAllFields (orderID,**keyword):
   for key , value in keyword.items():
     if key == "quantity":
       cursor.execute("UPDATE Orders SET quantity = ? WHERE order_id = ?",(value,orderID))
-    
 
+  conn.commit()
+  conn.close()  
+
+
+def consumedStock(vendorID,productID,consumed):
+  conn= sqlite3.connect("my_medical.db")
+  cursor=conn.cursor()
+
+  cursor.execute("UPDATE VendorStock SET quantity = quantity - ? WHERE vendor_id = ? AND product_id = ?",(consumed,vendorID,productID))
+
+  conn.commit()
+  conn.close()
+
+def addToStock(vendorID,productID,add):
+  conn= sqlite3.connect("my_medical.db")
+  cursor=conn.cursor()
+
+  cursor.execute("UPDATE VendorStock SET quantity = quantity + ? WHERE vendor_id = ? AND product_id = ?",(add,vendorID,productID))
+
+  conn.commit()
+  conn.close()
+
+def updateStockConsumedAtAdmin(vendorID,productID,consumed):
+  conn= sqlite3.connect("my_medical.db")
+  cursor=conn.cursor()
+
+  cursor.execute("UPDATE Products SET quantity = quantity - ? WHERE vendor_id = ? AND product_id = ?",(consumed,vendorID,productID))
+
+  conn.commit()
+  conn.close()
+
+def updateStockAddAtAdmin(vendorID,productID,add):
+  conn= sqlite3.connect("my_medical.db")
+  cursor=conn.cursor()
+
+  cursor.execute("UPDATE Products SET quantity = quantity + ? WHERE vendor_id = ? AND product_id = ?",(add,vendorID,productID))
+
+  conn.commit()
+  conn.close()
 
 
