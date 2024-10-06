@@ -1,6 +1,7 @@
-package com.example.medicalstorevendor.ui_layer
+package com.example.medicalstorevendor.ui_layer.screen
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -11,19 +12,19 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ComposeCompilerApi
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.medicalstorevendor.R
 import com.example.medicalstorevendor.ui_layer.Resources.MultiColorText
+import com.example.medicalstorevendor.ui_layer.navigation.SignInScreen
 
-@Preview(showSystemUi = true)
 @Composable
-fun TestCompose(modifier: Modifier = Modifier) {
+fun SignUpScreenUI(navController: NavController) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -62,7 +63,36 @@ fun TestCompose(modifier: Modifier = Modifier) {
                 onValueChange = {},
                 placeholder = { Text(text = "Enter Your Phone Number") })
 
-            MultiColorText(firstString ="Don't have an account?" , secondString = "Sign Up")
+            Spacer(modifier = Modifier.height(40.dp))
+            OutlinedTextField(
+                value = "",
+                onValueChange = {},
+                placeholder = { Text(text = "Enter Your Address") })
+
+            Spacer(modifier = Modifier.height(40.dp))
+            OutlinedTextField(
+                value = "",
+                onValueChange = {},
+                placeholder = { Text(text = "Enter Your Pin Code") })
+
+            Spacer(modifier = Modifier.height(40.dp))
+            OutlinedTextField(
+                value = "",
+                onValueChange = {},
+                placeholder = { Text(text = "Enter Your Name") })
+
+            Spacer(modifier = Modifier.height(40.dp))
+            Button(onClick = { /*TODO*/ }) {
+                Text(text = "Register User")
             }
+
+            Spacer(modifier = Modifier.height(40.dp))
+            MultiColorText(
+                firstString = "Already have an account?",
+                secondString = "Sign In",
+                modifier = Modifier.clickable {
+                    navController.navigate(SignInScreen)
+                })
         }
     }
+}

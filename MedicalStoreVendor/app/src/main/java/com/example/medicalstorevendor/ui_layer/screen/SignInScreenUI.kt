@@ -1,6 +1,7 @@
-package com.example.medicalstorevendor.ui_layer
+package com.example.medicalstorevendor.ui_layer.screen
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -11,19 +12,19 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ComposeCompilerApi
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.medicalstorevendor.R
 import com.example.medicalstorevendor.ui_layer.Resources.MultiColorText
+import com.example.medicalstorevendor.ui_layer.navigation.SignUpScreen
 
-@Preview(showSystemUi = true)
 @Composable
-fun TestCompose(modifier: Modifier = Modifier) {
+fun SignInScreenUI(navController: NavController) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -42,12 +43,6 @@ fun TestCompose(modifier: Modifier = Modifier) {
             OutlinedTextField(
                 value = "",
                 onValueChange = {},
-                placeholder = { Text(text = "Enter Your Name") })
-
-            Spacer(modifier = Modifier.height(40.dp))
-            OutlinedTextField(
-                value = "",
-                onValueChange = {},
                 placeholder = { Text(text = "Enter Your Email") })
 
             Spacer(modifier = Modifier.height(40.dp))
@@ -57,12 +52,18 @@ fun TestCompose(modifier: Modifier = Modifier) {
                 placeholder = { Text(text = "Enter Your Password") })
 
             Spacer(modifier = Modifier.height(40.dp))
-            OutlinedTextField(
-                value = "",
-                onValueChange = {},
-                placeholder = { Text(text = "Enter Your Phone Number") })
-
-            MultiColorText(firstString ="Don't have an account?" , secondString = "Sign Up")
+            Button(onClick = { /*TODO*/ }) {
+                Text(text = "Login")
             }
+
+            Spacer(modifier = Modifier.height(40.dp))
+            MultiColorText(
+                firstString = "Don't have an account?",
+                secondString = "Sign Up",
+                modifier = Modifier.clickable {
+                    navController.navigate(SignUpScreen)
+
+                })
         }
     }
+}
