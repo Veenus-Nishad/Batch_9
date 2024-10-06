@@ -4,7 +4,7 @@ from database.addOperation import createUser,addProduct,placeOrder,vendorStock
 from database.readOperation import getAllUsers,getAllProducts,getSpecificUser,getSpecificProduct,getSpecificUsersOrders,getSpecificProductsOrders
 from database.auth import user_auth
 from database.updateOperation import updateUserAllFields,consumedStock,updateOrderAllFields,addToStock,updateStockAddAtAdmin,updateStockConsumedAtAdmin
- 
+from database.deleteOperation import delete_all_users,delete_Specific_User
 app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
@@ -190,6 +190,24 @@ def adminStockAddMain():
     except Exception as e:
         return jsonify({"status ":400,"message": str(e)})
         
+
+@app.route("/deleteAllUsers",methods=["DELETE"])
+def deleteAllUsersMain():
+    try:
+        delete_all_users()
+        return jsonify({"status ":200,"message": "All Users Deleted"})
+    except Exception as e:
+        return jsonify({"status ":400,"message": str(e)})
+    
+@app.route("deleteSpecificUser",methods=["DELETE"])
+def deleteSpecificUserMain():
+    try:
+        userID = request.form['userID']
+        delete_Specific_User(userID)
+        return jsonify({"status ":200,"message": "User Deleted"})
+    except Exception as e:
+        return jsonify({"status ":400,"message": str(e)})
+    
 if __name__ == "__main__":
     createTable() 
     app.run(debug=True)

@@ -68,3 +68,21 @@ def createTable():
     );
     ''')
     conn.commit()
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Sales_History(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        sell_id VARCHAR(255),
+        product_id VARCHAR(255),
+        quantity INTEGER,
+        remaining_stock INTEGER,
+        date_of_sell DATE,
+        total_amount FLOAT,
+        price FLOAT,
+        product_name VARCHAR(255),
+        user_name VARCHAR(255),
+        user_id VARCHAR(255)
+    );
+    ''')
+    conn.commit()
+    conn.close()
