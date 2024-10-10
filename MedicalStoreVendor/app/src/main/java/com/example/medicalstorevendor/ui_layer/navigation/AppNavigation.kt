@@ -17,18 +17,8 @@ import com.example.medicalstorevendor.ui_layer.screen.SignUpScreenUI
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = StartScreen) {
-        composable<StartScreen> {
-            Box(modifier = Modifier.fillMaxSize()) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-            }
-            val userLogin = false
-            if (userLogin) {
-                navController.navigate(HomeScreen)
-            } else {
-                SignInScreenUI(navController)
-            }
-        }
+    NavHost(navController = navController, startDestination = SignInScreen) {
+
         composable<SignUpScreen> {
             SignUpScreenUI(navController)
         }

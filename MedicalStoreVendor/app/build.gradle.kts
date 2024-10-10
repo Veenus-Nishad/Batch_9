@@ -78,4 +78,5 @@ dependencies {
 
     implementation(libs.retrofit)
     implementation(libs.squareup.converter.gson)
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 }

@@ -12,19 +12,35 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.medicalstorevendor.R
+import com.example.medicalstorevendor.ui_layer.AppViewModel
 import com.example.medicalstorevendor.ui_layer.Resources.MultiColorText
 import com.example.medicalstorevendor.ui_layer.navigation.SignInScreen
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 @Composable
-fun SignUpScreenUI(navController: NavController) {
+fun SignUpScreenUI(navController: NavController,viewModel:AppViewModel= hiltViewModel()) {
+
+    //val state=viewModel.signUpUserState.value
+
+    var user_name by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var phoneNumber by remember { mutableStateOf("") }
+    var pinCode by remember { mutableStateOf("") }
+    var address by remember { mutableStateOf("") }
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -41,48 +57,50 @@ fun SignUpScreenUI(navController: NavController) {
 
             Spacer(modifier = Modifier.height(40.dp))
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = user_name,
+                onValueChange = {user_name=it},
                 placeholder = { Text(text = "Enter Your Name") })
 
             Spacer(modifier = Modifier.height(40.dp))
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = email,
+                onValueChange = {email=it},
                 placeholder = { Text(text = "Enter Your Email") })
 
             Spacer(modifier = Modifier.height(40.dp))
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = password,
+                onValueChange = {password=it},
                 placeholder = { Text(text = "Enter Your Password") })
 
             Spacer(modifier = Modifier.height(40.dp))
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = phoneNumber ,
+                onValueChange = {phoneNumber=it},
                 placeholder = { Text(text = "Enter Your Phone Number") })
 
             Spacer(modifier = Modifier.height(40.dp))
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = address,
+                onValueChange = {address=it},
                 placeholder = { Text(text = "Enter Your Address") })
 
             Spacer(modifier = Modifier.height(40.dp))
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = pinCode,
+                onValueChange = {pinCode=it},
                 placeholder = { Text(text = "Enter Your Pin Code") })
 
             Spacer(modifier = Modifier.height(40.dp))
-            OutlinedTextField(
-                value = "",
-                onValueChange = {},
-                placeholder = { Text(text = "Enter Your Name") })
-
-            Spacer(modifier = Modifier.height(40.dp))
-            Button(onClick = { /*TODO*/ }) {
+            Button(onClick = {
+                viewModel.SignUp(
+                    name = user_name,
+                    password = password,
+                    email = email,
+                    phoneNumber = phoneNumber,
+                    pinCode=pinCode,
+                    address = address,
+            )} ){
                 Text(text = "Register User")
             }
 
