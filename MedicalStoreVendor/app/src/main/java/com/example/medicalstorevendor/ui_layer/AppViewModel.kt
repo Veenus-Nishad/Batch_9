@@ -13,7 +13,7 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class AppViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
+class  AppViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
     val signUpUserState = mutableStateOf<Response<SignUpResponse>?>(null)
     val loginUserState = mutableStateOf<Response<LoginResponse>?>(null)
     fun SignUp(
