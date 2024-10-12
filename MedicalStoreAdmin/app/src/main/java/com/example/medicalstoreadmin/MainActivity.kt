@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.medicalstoreadmin.ui.theme.MedicalStoreAdminTheme
+import com.example.medicalstoreadmin.ui_layer.navigation.AppNavigation
 import com.example.medicalstoreadmin.ui_layer.screens.HomeScreenUI
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,7 +26,7 @@ class MainActivity : ComponentActivity() {
             MedicalStoreAdminTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                    Box(modifier = Modifier.padding(innerPadding)){
-                        HomeScreenUI()
+                        AppNavigation()
                    }
                 }
             }
