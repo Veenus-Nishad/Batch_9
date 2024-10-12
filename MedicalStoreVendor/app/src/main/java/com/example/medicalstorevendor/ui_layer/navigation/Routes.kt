@@ -13,3 +13,6 @@ object StartScreen
 
 @Serializable
 object HomeScreen
+
+@Serializable
+object PlaceOrderScreen

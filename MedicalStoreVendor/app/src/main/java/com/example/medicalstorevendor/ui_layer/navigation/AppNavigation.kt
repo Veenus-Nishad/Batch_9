@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.medicalstorevendor.ui_layer.screen.HomeScreenUI
+import com.example.medicalstorevendor.ui_layer.screen.PlaceOrderScreenUI
 import com.example.medicalstorevendor.ui_layer.screen.SignInScreenUI
 import com.example.medicalstorevendor.ui_layer.screen.SignUpScreenUI
 
@@ -28,6 +29,11 @@ fun AppNavigation() {
         composable<HomeScreen> {
             HomeScreenUI(navController)
         }
+        composable<PlaceOrderScreen> {
+            PlaceOrderScreenUI()
+        }
+
+
     }
 }
 
