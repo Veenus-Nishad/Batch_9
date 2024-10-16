@@ -16,13 +16,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.medicalstorevendor.ui_layer.AppViewModel
 import com.example.medicalstorevendor.ui_layer.navigation.PlaceOrderScreen
 
 
 @Composable
-fun HomeScreenUI( navController: NavHostController,viewModel: AppViewModel = hiltViewModel(),) {
+fun HomeScreenUI( navController: NavController,viewModel: AppViewModel = hiltViewModel(),) {
     val response = viewModel.getAllOrdersDetailState.collectAsState()
     val data = response.value.Data?.body() ?: emptyList()
     Scaffold(

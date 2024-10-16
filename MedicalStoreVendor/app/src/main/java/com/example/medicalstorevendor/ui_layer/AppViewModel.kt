@@ -1,6 +1,5 @@
 package com.example.medicalstorevendor.ui_layer
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.medicalstorevendor.State
@@ -9,22 +8,22 @@ import com.example.medicalstorevendor.data_layer.response.LoginResponse
 import com.example.medicalstorevendor.data_layer.response.PlaceOrderResponse
 import com.example.medicalstorevendor.data_layer.response.SignUpResponse
 import com.example.medicalstorevendor.repository.Repository
+import com.example.medicalstorevendor.user_preferences.UserPreferencesManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class AppViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
+class AppViewModel @Inject constructor(private val repository: Repository, private val userPreferencesManager:UserPreferencesManager) : ViewModel() {
 
     private val _signUpUserState = MutableStateFlow(SignUpState())
     val signUpUserState = _signUpUserState.asStateFlow()
 
-    private val _loginUserState = MutableStateFlow(SignInState())
+    private val _loginUserState = MutableStateFlow(LoginState())
     val loginUserState = _loginUserState.asStateFlow()
 
     private val _placeOrderState = MutableStateFlow(PlaceOrderState())
@@ -41,6 +40,7 @@ class AppViewModel @Inject constructor(private val repository: Repository) : Vie
                         _getAllOrdersDetailState.value=GetAllOrdersDetailState(Loading = true)
                     }
                     is State.Success->{
+
                         _getAllOrdersDetailState.value=GetAllOrdersDetailState(Data = state.data)
                     }
                     is State.Error->{
@@ -127,24 +127,26 @@ class AppViewModel @Inject constructor(private val repository: Repository) : Vie
         }
     }
 
-    fun SignIn(
+    fun login(
         email: String,
         password: String,
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.signInUser(
+            repository.LoginUser(
                 email = email,
                 password = password
             ).collect{state->
                 when(state){
                     is State.Loading->{
-                        _loginUserState.value=SignInState(Loading = true)
+                        _loginUserState.value=LoginState(Loading = true)
                     }
                     is State.Success->{
-                        _loginUserState.value=SignInState(Data = state.data)
+                        val userId=state.data.message()
+                        userPreferencesManager.saveUserId(userId)
+                        _loginUserState.value=LoginState(Data = state.data)
                     }
                     is State.Error->{
-                        _loginUserState.value=SignInState(Error = state.message)
+                        _loginUserState.value=LoginState(Error = state.message)
 
                     }                    }
             }
@@ -159,7 +161,7 @@ data class SignUpState(
 
 )
 
-data class SignInState(
+data class LoginState(
     val Loading: Boolean = false,
     val Error: String? = null,
     val Data: Response<LoginResponse>? = null

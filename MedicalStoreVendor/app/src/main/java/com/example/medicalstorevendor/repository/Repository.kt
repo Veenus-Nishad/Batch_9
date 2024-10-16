@@ -46,13 +46,13 @@ class Repository {
         }
     }
 
-    suspend fun signInUser(
+    suspend fun LoginUser(
         email: String,
         password: String
     ): Flow<State<Response<LoginResponse>>> = flow {
         emit(State.Loading)
         try {
-            val response = ApiProvider.provideApi().signInUser(
+            val response = ApiProvider.provideApi().LoginUser(
                 email = email,
                 password = password
             )

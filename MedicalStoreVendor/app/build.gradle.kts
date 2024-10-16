@@ -79,4 +79,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.squareup.converter.gson)
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+
+    //shared preference
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
 }

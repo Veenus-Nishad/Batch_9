@@ -23,12 +23,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import com.example.medicalstorevendor.R
 import com.example.medicalstorevendor.ui_layer.AppViewModel
 import com.example.medicalstorevendor.ui_layer.Resources.MultiColorText
-import com.example.medicalstorevendor.ui_layer.navigation.SignInScreen
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.example.medicalstorevendor.ui_layer.navigation.LoginScreen
 
 @Composable
 fun SignUpScreenUI(navController: NavController,viewModel:AppViewModel= hiltViewModel()) {
@@ -109,7 +107,7 @@ fun SignUpScreenUI(navController: NavController,viewModel:AppViewModel= hiltView
                 firstString = "Already have an account?",
                 secondString = "Sign In",
                 modifier = Modifier.clickable {
-                    navController.navigate(SignInScreen)
+                    navController.navigate(LoginScreen)
                 })
         }
     }

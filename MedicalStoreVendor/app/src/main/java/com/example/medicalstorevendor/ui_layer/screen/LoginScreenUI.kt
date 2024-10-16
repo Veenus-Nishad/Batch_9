@@ -23,19 +23,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import com.example.medicalstorevendor.R
 import com.example.medicalstorevendor.ui_layer.AppViewModel
 import com.example.medicalstorevendor.ui_layer.Resources.MultiColorText
 import com.example.medicalstorevendor.ui_layer.components.AlertDialogBox
 import com.example.medicalstorevendor.ui_layer.navigation.HomeScreen
-import com.example.medicalstorevendor.ui_layer.navigation.SignInScreen
 import com.example.medicalstorevendor.ui_layer.navigation.SignUpScreen
 
 @Composable
-fun SignInScreenUI(navController: NavController,viewModel: AppViewModel = hiltViewModel()) {
+fun LoginScreenUI(navController: NavController,viewModel: AppViewModel = hiltViewModel()) {
     var showDialog by remember { mutableStateOf(false) }
     var password by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -67,7 +64,7 @@ fun SignInScreenUI(navController: NavController,viewModel: AppViewModel = hiltVi
 
             Spacer(modifier = Modifier.height(40.dp))
             Button(onClick = {
-                viewModel.SignIn(
+                viewModel.login(
 
                     email = email,
                     password = password

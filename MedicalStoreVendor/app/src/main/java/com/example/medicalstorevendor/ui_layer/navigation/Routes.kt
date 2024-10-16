@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 object SignUpScreen
 
 @Serializable
-object SignInScreen
+object LoginScreen
 
 @Serializable
 object StartScreen
