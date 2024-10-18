@@ -10,6 +10,6 @@ data class ContactAppTable(
     val phone:String,
     val email:String,
     val image:ByteArray?=null,
-    val isFavorite: Boolean? = false,
-    val isDeleted:Boolean?=false
+    var isFavorite: Boolean? = false,
+    var isDeleted:Boolean?=false
 )

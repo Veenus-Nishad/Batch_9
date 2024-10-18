@@ -10,3 +10,6 @@ data class AddEditScreen(val contactId:Int?=null)
 
 @Serializable
 object RecycleBinScreen
+
+@Serializable
+data class MoreInformationScreen(val contactId:Int)

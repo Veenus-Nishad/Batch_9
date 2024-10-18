@@ -57,6 +57,7 @@ fun RecycleBinUI(
 ) {
     val deletedContacts = state.contactList.filter { it.isDeleted == true }
         .groupBy { it.name.firstOrNull()?.uppercaseChar() ?: Char.MIN_VALUE }.toSortedMap()
+
     var expandedCardIndex by remember { mutableStateOf<Int?>(null) }
 
     Scaffold(topBar = {
@@ -64,9 +65,11 @@ fun RecycleBinUI(
             title = { Text(text = "Recycle Bin") },
         )
     }) { innerPadding ->
-        LazyColumn(modifier = Modifier
-            .fillMaxSize()
-            .padding(innerPadding)) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
             deletedContacts.forEach { (firstLetter, contact) ->
                 item {
                     Row(

@@ -23,4 +23,8 @@ interface ContactAppDao {
 
     @Query("SELECT * FROM contacts_table WHERE isDeleted = 1")
     fun deletedContacts(): Flow<List<ContactAppTable>>
+
+    @Query("SELECT * FROM contacts_table WHERE id = :contactId")
+    fun getContactById(contactId: Int): Flow<ContactAppTable>
+
 }

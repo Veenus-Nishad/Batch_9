@@ -17,4 +17,8 @@ class Repository(val database_object: ContactAppDatabase) {
         return database_object.ContactDao().getAllContact()
 
     }
+
+    fun getContactById(contactId:Int):Flow<ContactAppTable>{
+        return database_object.ContactDao().getContactById(contactId)
+    }
 }

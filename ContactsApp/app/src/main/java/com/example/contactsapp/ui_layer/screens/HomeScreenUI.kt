@@ -49,16 +49,20 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.contactsapp.R
+import com.example.contactsapp.ui_layer.navigation.MoreInformationScreen
 import com.example.contactsapp.ui_layer.state.ContactAppState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreenUI(
-    navController: NavController,
+    onClickRecycleBin: () -> Unit,
     state: ContactAppState,
-){
-    val context=LocalContext.current
+    onClickUpsertContact: () -> Unit,
+    navController: NavController,
+) {
+    val context = LocalContext.current
     val nonDeletedContacts = state.contactList
         .filter { contact -> contact.isDeleted == false }  // explicitly check for false since isDeleted is nullable
         .groupBy { contact ->
@@ -75,16 +79,31 @@ fun HomeScreenUI(
     ) {
     }
 
-    Scaffold(topBar = {TopAppBar(
-        title = { Text(text = "Contacts") },
-        actions={
-            Icon(imageVector = Icons.Default.Add, contentDescription = "Add Contact",modifier=Modifier.clickable {})
-            Icon(imageVector = Icons.Default.Recycling, contentDescription = "Recycle Bin",modifier=Modifier.clickable {})
-        }
+    Scaffold(topBar = {
+        TopAppBar(
+            title = { Text(text = "Contacts") },
+            actions = {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Add Contact",
+                    modifier = Modifier.clickable {
+                        onClickUpsertContact()
+                    })
+                Icon(
+                    imageVector = Icons.Default.Recycling,
+                    contentDescription = "Recycle Bin",
+                    modifier = Modifier.clickable {
+                        onClickRecycleBin()
+                    })
+            }
 
-    )}) { innerPadding->
-        LazyColumn( modifier = Modifier
-            .padding(innerPadding).fillMaxSize()){
+        )
+    }) { innerPadding ->
+        LazyColumn(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+        ) {
             item {
                 Text(
                     "Favorite Contacts",
@@ -337,11 +356,11 @@ fun HomeScreenUI(
                                                 .clip(CircleShape)
                                                 .aspectRatio(1f)
                                                 .clickable {
-//                                                    navController.navigate(
-//                                                        MoreInfoScreen(
-//                                                            contactData.id!!
-//                                                        )
-//                                                    )
+                                                    navController.navigate(
+                                                        MoreInformationScreen(
+                                                            contactData.id!!
+                                                        )
+                                                    )
                                                 }
                                         )
                                     }

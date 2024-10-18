@@ -7,9 +7,11 @@ import com.example.contactsapp.data_layer.repository.Repository
 import com.example.contactsapp.ui_layer.state.ContactAppState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -64,6 +66,32 @@ class ContactsAppViewModel @Inject constructor(
         )
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteContact(contact)
+        }
+    }
+
+    fun getContactById(contactId:Int): Flow<ContactAppTable> {
+        return repository.getContactById(contactId) // This is a flow
+    }
+
+    // Update the "Favorite" status
+    fun updateFavoriteStatus(contactId: Int, isFavorite: Boolean) {
+        viewModelScope.launch {
+            val contact = repository.getContactById(contactId).firstOrNull() // Get current contact
+            contact?.let {
+                it.isFavorite = isFavorite
+                repository.upsertContact(it) // Update the contact with the new favorite status
+            }
+        }
+    }
+
+    // Update the "Deleted" status
+    fun updateDeletedStatus(contactId: Int, isDeleted: Boolean) {
+        viewModelScope.launch {
+            val contact = repository.getContactById(contactId).firstOrNull()
+            contact?.let {
+                it.isDeleted = isDeleted
+                repository.upsertContact(it)
+            }
         }
     }
 }
