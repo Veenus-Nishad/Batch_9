@@ -25,7 +25,7 @@ class ContactsAppViewModel @Inject constructor(
     private val _state =
         MutableStateFlow(ContactAppState()) // jo data class banai uski state manage karne ke liye
 
-    val state = combine(
+    val state = combine(//combine operator merges two flows: the UI state and contact list
         _state,
         contactList
     ) { //combine both state as we need them together can be used separately but
@@ -34,7 +34,7 @@ class ContactsAppViewModel @Inject constructor(
         _state.copy(contactList = contactList)
     }.stateIn(
         viewModelScope,
-        SharingStarted.WhileSubscribed(5000),
+        SharingStarted.WhileSubscribed(5000),// keeps the state active for 5 seconds after the last subscriber
         ContactAppState()
     )
 

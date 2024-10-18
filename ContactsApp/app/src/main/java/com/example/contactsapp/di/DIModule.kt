@@ -30,5 +30,4 @@ object DIModule {
     fun provideContactRepository(contactAppDatabase: ContactAppDatabase): Repository {
         return Repository(contactAppDatabase)
     }
-
 }
