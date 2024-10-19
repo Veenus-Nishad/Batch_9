@@ -1,15 +1,13 @@
 package com.example.contactsapp.ui_layer.navigation
 
-import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.platform.LocalContext
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
-import com.example.contactsapp.ui_layer.ContactsAppViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.example.contactsapp.ui_layer.ContactsAppViewModel
 import com.example.contactsapp.ui_layer.screens.AddEditScreenUI
 import com.example.contactsapp.ui_layer.screens.HomeScreenUI
 import com.example.contactsapp.ui_layer.screens.MoreInformationScreenUI
@@ -25,7 +23,7 @@ fun AppNavigation(viewModel: ContactsAppViewModel = hiltViewModel()) {
 
         composable<HomeScreen> {
             HomeScreenUI(state = state.value, onClickUpsertContact = {
-                navController.navigate(AddEditScreen(contactId = state.value.id.value))
+                navController.navigate(AddEditScreen(contactId = null))
             }, onClickRecycleBin = {
                 navController.navigate(RecycleBinScreen)
             }, navController = navController)
@@ -35,7 +33,8 @@ fun AppNavigation(viewModel: ContactsAppViewModel = hiltViewModel()) {
             val contactId: AddEditScreen = backStackEntry.toRoute()
             AddEditScreenUI(
                 state = state.value,
-                contactId = contactId.contactId,
+                contactId = contactId.contactId, //The contactId is passed to determine whether this screen is adding a new contact
+                // (if contactId is null) or editing an existing one.
                 onClick = { viewModel.upsertContact() },
                 onGoToPreviousScreen = { navController.popBackStack() })
         }
@@ -44,7 +43,9 @@ fun AppNavigation(viewModel: ContactsAppViewModel = hiltViewModel()) {
             val contactId: MoreInformationScreen = backStackEntry.toRoute()
             MoreInformationScreenUI(
                 contactId = contactId.contactId,
-                onGoBack = { navController.popBackStack() })
+                onGoBack = { navController.popBackStack() },
+                navController = navController
+            )
 
         }
 

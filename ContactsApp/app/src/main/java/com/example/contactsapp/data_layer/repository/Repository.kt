@@ -13,12 +13,16 @@ class Repository(val database_object: ContactAppDatabase) {
         database_object.ContactDao().deleteContact(contactAppTable)
     }
 
-    fun getAllContact(): Flow<List<ContactAppTable>>{
+    fun getAllContact(): Flow<List<ContactAppTable>> {
         return database_object.ContactDao().getAllContact()
 
     }
 
-    fun getContactById(contactId:Int):Flow<ContactAppTable>{
+    fun getDeletedContacts(): Flow<List<ContactAppTable>> {
+        return database_object.ContactDao().deletedContacts() // Expose the deleted contacts query
+    }
+
+    fun getContactById(contactId: Int): Flow<ContactAppTable> {
         return database_object.ContactDao().getContactById(contactId)
     }
 }

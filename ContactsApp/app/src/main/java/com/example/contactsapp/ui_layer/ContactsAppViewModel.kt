@@ -24,16 +24,21 @@ class ContactsAppViewModel @Inject constructor(
     private val contactList = repository.getAllContact()  // to fetch the list of contacts
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
 
+    // Add flow for deleted contacts
+    private val deletedContacts = repository.getDeletedContacts()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
+
     private val _state =
         MutableStateFlow(ContactAppState()) // jo data class banai uski state manage karne ke liye
 
     val state = combine(//combine operator merges two flows: the UI state and contact list
         _state,
-        contactList
+        contactList,
+        deletedContacts
     ) { //combine both state as we need them together can be used separately but
         // for code modularity we use combine
-            _state, contactList ->
-        _state.copy(contactList = contactList)
+            _state, contactList, deletedContacts ->
+        _state.copy(contactList = contactList, deletedContactList = deletedContacts)
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5000),// keeps the state active for 5 seconds after the last subscriber
@@ -56,20 +61,28 @@ class ContactsAppViewModel @Inject constructor(
         }
     }
 
-    fun deleteContactsPermanently(){
-        val contact=ContactAppTable(
-            id = state.value.id.value,
-            name = state.value.name.value,
-            phone = state.value.phoneNumber.value,
-            email = state.value.email.value,
-            image = state.value.image.value,
-        )
+    fun deleteContactsPermanently(contactId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteContact(contact)
+            val contact = repository.getContactById(contactId).firstOrNull()
+            contact?.let {
+                repository.deleteContact(it) // Delete the contact from the database
+            }
+
         }
     }
 
-    fun getContactById(contactId:Int): Flow<ContactAppTable> {
+    fun deleteAllDeletedContacts() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val deletedContacts = repository.getDeletedContacts().firstOrNull()
+            deletedContacts?.let { contacts ->
+                contacts.forEach { contact ->
+                    repository.deleteContact(contact) // Delete each contact
+                }
+            }
+        }
+    }
+
+    fun getContactById(contactId: Int): Flow<ContactAppTable> {
         return repository.getContactById(contactId) // This is a flow
     }
 

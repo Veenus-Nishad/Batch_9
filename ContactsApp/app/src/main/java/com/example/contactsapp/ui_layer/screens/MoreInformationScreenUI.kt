@@ -41,14 +41,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.contactsapp.R
 import com.example.contactsapp.ui_layer.ContactsAppViewModel
+import com.example.contactsapp.ui_layer.navigation.AddEditScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MoreInformationScreenUI(
     contactId:Int,
-//    onNavigateToEdit:()->Unit,
+    navController: NavController,
       onGoBack:()->Unit
 ) {
     val viewModel: ContactsAppViewModel = hiltViewModel()
@@ -206,15 +208,17 @@ fun MoreInformationScreenUI(
                         imageVector = Icons.Outlined.Edit,
                         contentDescription = "Edit Contact",
                         modifier = Modifier.clickable {
-
+                            Log.d("TAG", "MoreInformationScreenUI: $contactId")
+                            navController.navigate(AddEditScreen(contactId = contactId))
                         })
 
                     Icon(
                         imageVector = Icons.Outlined.Delete,
                         contentDescription = "Delete",
                         modifier = Modifier.clickable {
-                            viewModel.updateDeletedStatus(contactId,!it.isDeleted!!)
                             onGoBack()
+                            viewModel.updateDeletedStatus(contactId,!it.isDeleted!!)
+
                         })
 
                 }

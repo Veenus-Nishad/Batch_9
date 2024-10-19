@@ -45,17 +45,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.contactsapp.R
+import com.example.contactsapp.ui_layer.ContactsAppViewModel
 import com.example.contactsapp.ui_layer.state.ContactAppState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecycleBinUI(
     navController: NavController,
-    state: ContactAppState
+    state: ContactAppState,
+    viewModel: ContactsAppViewModel = hiltViewModel()
 ) {
-    val deletedContacts = state.contactList.filter { it.isDeleted == true }
+    val deletedContacts = state.deletedContactList
         .groupBy { it.name.firstOrNull()?.uppercaseChar() ?: Char.MIN_VALUE }.toSortedMap()
 
     var expandedCardIndex by remember { mutableStateOf<Int?>(null) }
@@ -63,6 +66,18 @@ fun RecycleBinUI(
     Scaffold(topBar = {
         TopAppBar(
             title = { Text(text = "Recycle Bin") },
+            actions = {
+                if (deletedContacts.isNotEmpty()) { // Show the button only if there are deleted contacts
+                    IconButton(onClick = {
+                        viewModel.deleteAllDeletedContacts() // Call the ViewModel function
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.DeleteForever,
+                            contentDescription = "Delete All"
+                        )
+                    }
+                }
+            }
         )
     }) { innerPadding ->
         LazyColumn(
@@ -114,22 +129,27 @@ fun RecycleBinUI(
                                 Text(text = contactData.name)
                             }
                             if (isExpanded) {
-                                Row(horizontalArrangement = SpaceBetween) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceEvenly
+                                ) {
                                     IconButton(onClick = {
+                                        viewModel.updateDeletedStatus(contactData.id!!, false)
                                     }) {
                                         Icon(
                                             imageVector = Icons.Default.Restore,
                                             contentDescription = "Restore"
                                         )
-                                        IconButton(onClick = {
-
-                                        }) {
-                                            Icon(
-                                                imageVector = Icons.Default.DeleteForever,
-                                                contentDescription = "Restore"
-                                            )
-                                        }
                                     }
+                                    IconButton(onClick = {
+                                        viewModel.deleteContactsPermanently(contactId = contactData.id!!)
+                                    }) {
+                                        Icon(
+                                            imageVector = Icons.Default.DeleteForever,
+                                            contentDescription = "Delete"
+                                        )
+                                    }
+
                                 }
                             }
                         }

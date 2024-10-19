@@ -34,15 +34,18 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.contactsapp.R
+import com.example.contactsapp.ui_layer.ContactsAppViewModel
 import com.example.contactsapp.ui_layer.state.ContactAppState
 
 @Composable
 fun AddEditScreenUI(
     state: ContactAppState,
     onClick : ()-> Unit,
-    contactId:Int?=null,
+    contactId:Int?,
     onGoToPreviousScreen:()->Unit,
+    viewModel: ContactsAppViewModel= hiltViewModel(),
 ) {
     val context= LocalContext.current
     val launcher =
@@ -56,15 +59,40 @@ fun AddEditScreenUI(
             }
         }
 
-       // Reset the form if contactId is null (i.e., adding a new contact)
-        LaunchedEffect(contactId) {
-            if (contactId == null) {
-                state.name.value = ""
-                state.phoneNumber.value = ""
-                state.email.value = ""
-                state.image.value = null
+    val contact = if (contactId != null) {
+        state.contactList.find { it.id == contactId }
+    } else {
+        null
+    }
+
+
+    // Reset the form if contactId is null (i.e., adding a new contact)
+    LaunchedEffect(contactId) {
+        if (contactId == null) {
+            state.apply {
+                id.value = null
+                name.value = ""
+                phoneNumber.value = ""
+                email.value = ""
+                image.value = null
+                isFavorite.value = false
+                isDeleted.value = false
+            }
+        } else {
+            contact?.let {
+                state.apply {
+                    id.value = it.id
+                    name.value = it.name
+                    phoneNumber.value = it.phone
+                    email.value = it.email
+                    image.value = it.image
+                    isFavorite.value = it.isFavorite ?: false
+                    isDeleted.value = it.isDeleted ?: false
+                }
             }
         }
+    }
+
 
     Column(modifier= Modifier.background(color = Color(0xFFf6f6f8)), horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(modifier = Modifier.height(22.dp))
