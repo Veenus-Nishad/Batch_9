@@ -1,4 +1,4 @@
-package com.example.e_book
+package com.example.e_book.data
 
 sealed class ResultState<out T> {
     data class Success<out T>(val data: T) : ResultState<T>()

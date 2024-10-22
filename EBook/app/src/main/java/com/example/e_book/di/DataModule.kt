@@ -25,4 +25,5 @@ object DataModule {
         return Repository(firebaseDatabase)
 
     }
+
 }

@@ -18,11 +18,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TabBar(){
+fun TabBar(navController: NavController){
     val tabs = listOf(
         tabItem("Category", Icons.Default.Category),
         tabItem("Books", Icons.Default.Book),
@@ -56,8 +57,8 @@ fun TabBar(){
 
         HorizontalPager(state=pageState) {
             when(it){
-                0 -> BookCategory()
-                1 -> AllBooksScreen()
+                0 -> BookCategory(navController = navController)
+                1 -> AllBooksScreen(navController = navController)
             }
         }
 
