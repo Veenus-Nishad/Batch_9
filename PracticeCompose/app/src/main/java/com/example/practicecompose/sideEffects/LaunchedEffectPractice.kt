@@ -7,6 +7,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PauseCircleFilled
+import androidx.compose.material.icons.filled.PlayCircleFilled
+import androidx.compose.material.icons.filled.StopCircle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,6 +28,16 @@ import kotlinx.coroutines.delay
 
  enum class CounterState{
         Started,inProgress,Finished
+}
+
+suspend fun FetchIcon(counterState: CounterState){
+    delay(200)
+    when(counterState){
+        CounterState.Started-> Icons.Filled.PlayCircleFilled
+        CounterState.inProgress-> Icons.Filled.PauseCircleFilled
+        CounterState.Finished-> Icons.Filled.StopCircle
+
+    }
 }
 
 @Composable
@@ -49,14 +64,17 @@ fun StartTimer() {
 
     LaunchedEffect(Unit) { // unit for only one whole execution of forEach Loop agar counter State se karte toh 8 baar call hota Launched effect
 
-        colors.forEach { color->
-            delay(1000)
-            bgColor=color
-        }
-        counterState++
-        isCounterFinished=true
+         while (counterState < colors.size) {
+            delay(1000) // 1-second delay
+            bgColor = colors[counterState] // Update background color
+            counterState++ // Increment counter
 
-        Log.d("TAG","LaunchedEffect Launched ")
+            // If this is the last color, delay to allow display
+            if (counterState == colors.size) {
+                delay(1000) // Add extra delay for the last color
+                isCounterFinished = true // Mark as finished
+            }
+        }
     }
 
 
@@ -73,8 +91,11 @@ fun StartTimer() {
         else{
             Text(
             text =  counterState.toString() ,
-            modifier = Modifier.background(bgColor).size(60.dp))
+            modifier =  Modifier.size(60.dp) // Set the size of the text box
+                .background(bgColor) // Background color
+                .wrapContentSize(Alignment.Center)) // Center the text within the box
         }
+
     }
 }
 
