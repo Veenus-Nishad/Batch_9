@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="32ce6ce5-5fa6-4771-a8e8-d3bc84ae4c8c" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/MedicalStoreAdmin/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MedicalStoreAdmin/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MedicalStoreAdmin/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MedicalStoreAdmin/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MedicalStoreAdmin/.idea/runConfigurations.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MedicalStoreAdmin/.idea/runConfigurations.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MedicalStoreVendor/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MedicalStoreVendor/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MedicalStoreVendor/.idea/runConfigurations.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MedicalStoreVendor/.idea/runConfigurations.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MedicalStoreVendor/app/src/main/java/com/example/medicalstorevendor/di/DataModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/MedicalStoreVendor/app/src/main/java/com/example/medicalstorevendor/di/DataModule.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MedicalStoreVendor/app/src/main/java/com/example/medicalstorevendor/ui_layer/AppViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/MedicalStoreVendor/app/src/main/java/com/example/medicalstorevendor/ui_layer/AppViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MedicalStoreVendor/app/src/main/java/com/example/medicalstorevendor/ui_layer/navigation/AppNavigation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/MedicalStoreVendor/app/src/main/java/com/example/medicalstorevendor/ui_layer/navigation/AppNavigation.kt" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2piQafY2UZIZPl4Ea7NHU7q2hEJ" />
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/Batch_9/PracticeCompose"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="32ce6ce5-5fa6-4771-a8e8-d3bc84ae4c8c" name="Changes" comment="" />
+      <created>1733246481827</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1733246481827</updated>
+    </task>
+    <servers />
+  </component>
+</project>

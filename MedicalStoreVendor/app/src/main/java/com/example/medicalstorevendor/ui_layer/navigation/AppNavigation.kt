@@ -29,11 +29,11 @@ import com.example.medicalstorevendor.user_preferences.UserPreferencesManager
 
 @Composable
 fun AppNavigation(
-    userPreferencesManager: UserPreferencesManager
+    userPreferencesManager: UserPreferencesManager // kind of like injecting
 ) {
     val navController = rememberNavController()
 
-    val userId by userPreferencesManager.getUserId.collectAsState(initial = null)
+    val userId by userPreferencesManager.getUserId.collectAsState(initial = null) // using this to check if there is a stored preference
 
     var selectedIndex by remember { mutableIntStateOf(0) }
 

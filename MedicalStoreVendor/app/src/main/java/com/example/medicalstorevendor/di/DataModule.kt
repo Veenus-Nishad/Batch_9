@@ -18,10 +18,12 @@ object DataModule {
     fun provideRepository() = Repository()
 
     @Singleton
-    @Provides
-    fun provideUserPreferenceManager(@ApplicationContext context: Context)= UserPreferencesManager(context)
+    @Provides // as iska object baar baar banta isiliye isko di mein dala
+    fun provideUserPreferenceManager(@ApplicationContext context: Context) =
+        UserPreferencesManager(context)
+    // context pass kiya hain to ab local context banana nahi padega yahi wala context use kar sakte hain
 
     @Singleton
     @Provides
-    fun provideContext(@ApplicationContext context: Context)=context
+    fun provideContext(@ApplicationContext context: Context) = context
 }

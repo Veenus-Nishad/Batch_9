@@ -142,7 +142,7 @@ class AppViewModel @Inject constructor(private val repository: Repository, priva
                     }
                     is State.Success->{
                         val userId=state.data.message()
-                        userPreferencesManager.saveUserId(userId)
+                        userPreferencesManager.saveUserId(userId) // login success hote hi save kara diya
                         _loginUserState.value=LoginState(Data = state.data)
                     }
                     is State.Error->{
