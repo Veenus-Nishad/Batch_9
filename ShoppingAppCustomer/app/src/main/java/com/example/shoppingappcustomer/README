@@ -1,0 +1,5 @@
+why usecase package?
+        usecase package ek enscapsulation technique hai jisse hum jitna use classes ya methods ka hai
+        dusri jagah utna hi pass karte hai as a function
+        improves Scalibilty
+        here viewModel ko direct acess nahi milega repo ka
