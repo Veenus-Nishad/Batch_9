@@ -17,23 +17,23 @@ class myViewModel @Inject constructor(
     private val repo: repo
 ) : ViewModel() {
 
-    private val _addCategoryState = MutableStateFlow(addCategorystate())
-    val addCategoryState = _addCategoryState.asStateFlow()
+    private val _addCategory = MutableStateFlow(addCategoryState())
+    val addCategory = _addCategory.asStateFlow()
 
     fun addCategory(category: category) {
         viewModelScope.launch {
             repo.addCategory(category).collectLatest {
                 when (it) {
                     is ResultState.Loading -> {
-                        _addCategoryState.value = addCategorystate(isLoading = true)
+                        _addCategory.value = addCategoryState(isLoading = true)
                     }
 
                     is ResultState.Success -> {
-                        addCategorystate(data = it.data)
+                        _addCategory.value=addCategoryState(data = it.data)
                     }
 
                     is ResultState.Error -> {
-                        addCategorystate(error = it.error)
+                        _addCategory.value=addCategoryState(error = it.error)
                     }
                 }
             }
@@ -41,7 +41,7 @@ class myViewModel @Inject constructor(
     }
 }
 
-data class addCategorystate(
+data class addCategoryState(
     val isLoading: Boolean = false,
     val error: String = "",
     val data: String = ""
