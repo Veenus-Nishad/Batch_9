@@ -1,9 +1,13 @@
 package com.example.shoppingappcustomer.data.repoimpl
 
 import com.example.shoppingappcustomer.common.CATEGORY
+import com.example.shoppingappcustomer.common.PRODUCT
 import com.example.shoppingappcustomer.common.ResultState
 import com.example.shoppingappcustomer.domain.models.Category
+import com.example.shoppingappcustomer.domain.models.ProductModel
+import com.example.shoppingappcustomer.domain.models.UserData
 import com.example.shoppingappcustomer.domain.repo.repo
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.firestore.toObjects
@@ -13,8 +17,30 @@ import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
 
 class repoImpl @Inject constructor(
-    private val firebaseFirestore: FirebaseFirestore
+    private val firebaseFirestore: FirebaseFirestore,
+    private val firebaseAuth: FirebaseAuth
 ) : repo {
+    override fun registerUserWithEmailAndPassword(userData: UserData): Flow<ResultState<String>> =
+        callbackFlow {
+            trySend(ResultState.Loading)
+            firebaseAuth.createUserWithEmailAndPassword(userData.email, userData.password)
+                .addOnSuccessListener {
+                    firebaseFirestore.collection("USERS").document(it.user?.uid.toString())
+                        .set(userData).addOnSuccessListener {
+                            trySend(ResultState.Success("User Registered Successfully"))
+                        }.addOnFailureListener {
+                            trySend(ResultState.Error(it.toString()))
+                        }
+
+                }
+                .addOnFailureListener {
+                    trySend(ResultState.Error(it.toString()))
+                }
+            awaitClose {
+                close()
+            }
+        }
+
     override fun getAllCategory(): Flow<ResultState<List<Category>>> = callbackFlow {
         trySend(ResultState.Loading)
         // .limit can be used to set the limit of get
@@ -36,4 +62,56 @@ class repoImpl @Inject constructor(
             close()
         }
     }
+
+    override fun getCategoryInLimit(): Flow<ResultState<List<Category>>> = callbackFlow {
+        trySend(ResultState.Loading)
+        firebaseFirestore.collection(CATEGORY).limit(5).get()
+            .addOnSuccessListener {
+                val categoryData = it.documents.mapNotNull {
+                    it.toObject(Category::class.java)
+                }
+                trySend(ResultState.Success(categoryData))
+            }
+            .addOnFailureListener {
+                trySend(ResultState.Error(it.toString()))
+            }
+        awaitClose {
+            close()
+        }
+    }
+
+    override fun getAllProducts(): Flow<ResultState<List<ProductModel>>> = callbackFlow {
+        trySend(ResultState.Loading)
+        firebaseFirestore.collection(PRODUCT).get()
+            .addOnSuccessListener {
+                val productData = it.documents.mapNotNull {
+                    it.toObject(ProductModel::class.java)
+                }
+                trySend(ResultState.Success(productData))
+            }
+            .addOnFailureListener {
+                trySend(ResultState.Error(it.toString()))
+            }
+        awaitClose {
+            close()
+        }
+    }
+
+    override fun getProductsInLimit(): Flow<ResultState<List<ProductModel>>> = callbackFlow {
+        trySend(ResultState.Loading)
+        firebaseFirestore.collection(PRODUCT).limit(5).get()
+            .addOnSuccessListener {
+                val productData = it.documents.mapNotNull {
+                    it.toObject(ProductModel::class.java)
+                }
+                trySend(ResultState.Success(productData))
+            }
+            .addOnFailureListener {
+                trySend(ResultState.Error(it.toString()))
+            }
+        awaitClose {
+            close()
+        }
+    }
+
 }
