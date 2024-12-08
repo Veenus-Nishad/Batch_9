@@ -21,6 +21,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
@@ -40,9 +42,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.Role.Companion.Button
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.example.shoppingapp.domain.models.ProductModels
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,20 +61,21 @@ fun AddProductScreen(
     val getCategoryState = viewModel.getCategory.collectAsState()
     val productImage = viewModel.uploadProductImage.collectAsState()
 
+
     val context = LocalContext.current
 
     var name by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var price by remember { mutableStateOf("") }
-    var category by remember { mutableStateOf("") }
+    var category by remember { mutableStateOf<Array<String>?>(null) }
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     var imageUrl by remember { mutableStateOf("") }
-    var availableUnits by remember { mutableStateOf("") }
+    var availableUnits by remember { mutableStateOf(0) }
     var expanded by remember { mutableStateOf("") }
     var createdBy by remember { mutableStateOf("") }
     var finalPrice by remember { mutableStateOf("") }
 
-    val isExposedDropDownExpanded by remember {
+    var isExposedDropDownExpanded by remember {
         mutableStateOf(false)
     }
     val coffeeDrinks = arrayOf("Americano", "Cappuccino", "Espresso", "Latte", "Mocha")
@@ -104,48 +109,113 @@ fun AddProductScreen(
                     .clip(RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop
             )
-        }else{
+        } else {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
                     .clip(RoundedCornerShape(8.dp)),
                 contentAlignment = Alignment.Center
-            ){
+            ) {
                 Column(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxSize().clickable {
-                        launcher.launch(
-                            PickVisualMediaRequest(
-                                mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clickable {
+                            launcher.launch(
+                                PickVisualMediaRequest(
+                                    mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly
+                                )
                             )
-                        )
-                    }
+                        }
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,
                         contentDescription = null,
                         modifier = Modifier
-                            .clickable {  }
+                            .clickable { }
                     )
                     Text(text = "Add Image")
-                    Text(text="Add Products")
-                    OutlinedTextField(value=name,onValueChange={name=it},label={Text(text="Name")})
-                    Row(){
-                      OutlinedTextField(value=price,onValueChange={price=it},label={Text(text="Price")})
-                      OutlinedTextField(value=finalPrice, onValueChange = {finalPrice=it},label={Text(text="Final Price")})
+                    Text(text = "Add Products")
+                    OutlinedTextField(
+                        value = name,
+                        onValueChange = { name = it },
+                        label = { Text(text = "Name") })
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        OutlinedTextField(
+                            value = price,
+                            onValueChange = { price = it },
+                            label = { Text(text = "Price") })
+                        OutlinedTextField(
+                            value = finalPrice,
+                            onValueChange = { finalPrice = it },
+                            label = { Text(text = "Final Price") })
                     }
                     ExposedDropdownMenuBox(
-                        expanded=isExposedDropDownExpanded,
-                        onExpandedChange = {isExposedDropDownExpanded != isExposedDropDownExpanded}
+                        expanded = isExposedDropDownExpanded,
+                        onExpandedChange = { isExposedDropDownExpanded != isExposedDropDownExpanded }
                     ) {
-                        OutlinedTextField(value=selectedText,onValueChange = {selectedText=it}, trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(true) })
+                        OutlinedTextField(
+                            value = selectedText,
+                            onValueChange = { selectedText = it },
+                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExposedDropDownExpanded) },
+                            modifier = Modifier.menuAnchor()
+                        )
+                        ExposedDropdownMenu(
+                            expanded = isExposedDropDownExpanded,
+                            onDismissRequest = { isExposedDropDownExpanded = false }
+                        ) {
+                            category!!.forEach { item ->
+                                DropdownMenuItem(
+                                    text = { Text(text = item) },
+                                    onClick = {
+                                        selectedText = item
+                                        isExposedDropDownExpanded = false
+                                    })
+                            }
+                        }
                     }
 
+                    OutlinedTextField(
+                        value = description,
+                        onValueChange = { description = it },
+                        label = { Text(text = "Description") }
+                    )
+                    OutlinedTextField(
+                        value = availableUnits.toString(),
+                        onValueChange = { availableUnits = it.toInt() },
+                        label = { Text(text = "Available Units") }
+                    )
+                    OutlinedTextField(
+                        value = createdBy,
+                        onValueChange = { createdBy = it },
+                        label = { Text(text = "Created By") }
+                    )
+                    Button(
+                        onClick = {
+                            val data = ProductModels(
+                                name = name,
+                                price = price,
+                                finalprice = finalPrice,
+                                availableUnits = availableUnits,
+                                createdBy = createdBy,
+                                description = description,
+                                category = category.toString(),
+                                image=imageUrl
+                            )
+                            viewModel.addProduct(
+                                data
+                            )
+                        },modifier=Modifier.fillMaxWidth()
+
+                    ){
+                        Text("Add Product")
                     }
+
                 }
             }
+
         }
     }
 }
