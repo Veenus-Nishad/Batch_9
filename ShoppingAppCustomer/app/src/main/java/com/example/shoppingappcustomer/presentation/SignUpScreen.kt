@@ -1,9 +1,14 @@
 package com.example.shoppingappcustomer.presentation
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedTextField
@@ -16,8 +21,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.shoppingappcustomer.domain.models.UserData
 
 @Composable
@@ -32,10 +42,10 @@ fun SignUpScreen(
         registerState.value.isLoading->{
             CircularProgressIndicator()
         }
-        registerState.value.data !=null ->{
+        registerState.value.data?.isNotEmpty() == true ->{
             Toast.makeText(localContext, registerState.value.data.toString(), Toast.LENGTH_SHORT).show()
         }
-        registerState.value.error != null->{
+        registerState.value.error.isNotEmpty()->{
             Toast.makeText(localContext, registerState.value.error, Toast.LENGTH_SHORT).show()
         }
     }
@@ -109,6 +119,24 @@ fun SignUpScreen(
             }
         ) {
             Text("Sign Up")
+        }
+
+    }
+}
+
+@Preview(showSystemUi = true)
+@Composable
+fun SignUpScreenPreview() {
+
+    Column(modifier=Modifier.padding(start =34.dp,top=124.dp,end=34.dp,bottom=100.dp).fillMaxSize()
+        .background(Color.Cyan)) {
+        Text(text = "Signup" ,fontSize = 30.sp)
+        Row(
+            modifier=Modifier.padding(top=24.dp).fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ){
+            OutlinedTextField(value= "", onValueChange = {}, placeholder = { Text("First Name", fontSize = 13.sp) }, modifier = Modifier.size(width = 148.dp, height = 40.dp))
+            OutlinedTextField(value= "", onValueChange = {}, placeholder = { Text("Last Name") }, modifier = Modifier.size(width = 148.dp, height = 40.dp))
         }
 
     }

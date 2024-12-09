@@ -4,6 +4,7 @@ import com.example.shoppingappcustomer.data.repoimpl.repoImpl
 import com.example.shoppingappcustomer.domain.repo.repo
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,9 +16,10 @@ object UiModels {
     @Provides
     fun provideRepo(
         firebaseFirestore: FirebaseFirestore,
-        firebaseAuth: FirebaseAuth
+        firebaseAuth: FirebaseAuth,
+        firebaseStorage: FirebaseStorage
     ): repo {
-        return repoImpl(firebaseFirestore, firebaseAuth)
+        return repoImpl(firebaseFirestore, firebaseAuth,firebaseStorage)
     }
 
 }

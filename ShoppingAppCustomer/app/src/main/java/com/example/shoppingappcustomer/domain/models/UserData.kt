@@ -8,5 +8,6 @@ data class UserData (
     val confirmPassword:String="",
     val phoneNumber:String="",
     val address:String="",
-    val userImage:String=""
+    val userImage:String="",
+    var uuid : String = "",
 )

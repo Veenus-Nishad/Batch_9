@@ -1,4 +1,5 @@
 package com.example.shoppingappcustomer.common
 
-val CATEGORY="CATEGORY"
-val PRODUCT="PRODUCT"
+const val CATEGORY="CATEGORY"
+const val PRODUCT="PRODUCT"
+const val USERS="USERS"

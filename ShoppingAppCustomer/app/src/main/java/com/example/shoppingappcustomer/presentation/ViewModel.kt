@@ -39,7 +39,7 @@ class ViewModel @Inject constructor(
     fun registerUserWithEmailAndPassword(userData: UserData) {
         viewModelScope.launch {
             RegisterUserWithEmailAndPasswordUseCase.registerUserWithEmailAndPassword(userData)
-                .collectLatest {
+                .collect {
                     when (it) {
                         is ResultState.Loading -> {
                             _registerUserState.value = RegisterUserState(isLoading = true)
