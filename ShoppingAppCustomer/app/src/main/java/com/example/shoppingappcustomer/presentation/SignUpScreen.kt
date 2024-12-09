@@ -2,15 +2,19 @@ package com.example.shoppingappcustomer.presentation
 
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,23 +38,26 @@ import com.example.shoppingappcustomer.domain.models.UserData
 fun SignUpScreen(
     viewModel: ViewModel = hiltViewModel()
 ) {
-    val registerState=viewModel.registerUserState.collectAsState()
+    val registerState = viewModel.registerUserState.collectAsState()
 
-    val localContext= LocalContext.current
+    val localContext = LocalContext.current
 
-    when{
-        registerState.value.isLoading->{
+    when {
+        registerState.value.isLoading -> {
             CircularProgressIndicator()
         }
-        registerState.value.data?.isNotEmpty() == true ->{
-            Toast.makeText(localContext, registerState.value.data.toString(), Toast.LENGTH_SHORT).show()
+
+        registerState.value.data?.isNotEmpty() == true -> {
+            Toast.makeText(localContext, registerState.value.data.toString(), Toast.LENGTH_SHORT)
+                .show()
         }
-        registerState.value.error.isNotEmpty()->{
+
+        registerState.value.error.isNotEmpty() -> {
             Toast.makeText(localContext, registerState.value.error, Toast.LENGTH_SHORT).show()
         }
     }
     Column(
-        modifier= Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -63,7 +70,7 @@ fun SignUpScreen(
         OutlinedTextField(
             value = firstName,
             onValueChange = {
-                firstName=it
+                firstName = it
             },
             label = {
                 Text(text = "First Name")
@@ -72,7 +79,7 @@ fun SignUpScreen(
         OutlinedTextField(
             value = lastName,
             onValueChange = {
-                lastName=it
+                lastName = it
             },
             label = {
                 Text(text = "Last Name")
@@ -81,7 +88,7 @@ fun SignUpScreen(
         OutlinedTextField(
             value = email,
             onValueChange = {
-                email=it
+                email = it
             },
             label = {
                 Text(text = "Email")
@@ -90,7 +97,7 @@ fun SignUpScreen(
         OutlinedTextField(
             value = createPassword,
             onValueChange = {
-                createPassword=it
+                createPassword = it
             },
             label = {
                 Text(text = "Create Password")
@@ -99,7 +106,7 @@ fun SignUpScreen(
         OutlinedTextField(
             value = confirmPassword,
             onValueChange = {
-                confirmPassword=it
+                confirmPassword = it
             },
             label = {
                 Text(text = "Confirm Password")
@@ -108,7 +115,7 @@ fun SignUpScreen(
 
         Button(
             onClick = {
-                val data= UserData(
+                val data = UserData(
                     firstName = firstName,
                     lastName = lastName,
                     email = email,
@@ -128,16 +135,83 @@ fun SignUpScreen(
 @Composable
 fun SignUpScreenPreview() {
 
-    Column(modifier=Modifier.padding(start =34.dp,top=124.dp,end=34.dp,bottom=100.dp).fillMaxSize()
-        .background(Color.Cyan)) {
-        Text(text = "Signup" ,fontSize = 30.sp)
+    Column(
+        modifier = Modifier
+            .padding(start = 34.dp, top = 124.dp, end = 34.dp, bottom = 100.dp)
+            .fillMaxSize()
+            .background(Color.Cyan)
+    ) {
+        Text(text = "Signup", fontSize = 30.sp)
         Row(
-            modifier=Modifier.padding(top=24.dp).fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ){
-            OutlinedTextField(value= "", onValueChange = {}, placeholder = { Text("First Name", fontSize = 13.sp) }, modifier = Modifier.size(width = 148.dp, height = 40.dp))
-            OutlinedTextField(value= "", onValueChange = {}, placeholder = { Text("Last Name") }, modifier = Modifier.size(width = 148.dp, height = 40.dp))
+            modifier = Modifier
+                .padding(top = 24.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            OutlinedTextField(
+                value = "",
+                onValueChange = {},
+                placeholder = { Text("First Name") },
+                modifier = Modifier.width(148.dp)
+            )
+            OutlinedTextField(
+                value = "",
+                onValueChange = {},
+                placeholder = { Text("Last Name") },
+                modifier = Modifier.width(148.dp)
+            )
+        }
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            placeholder = { Text("Email") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 21.dp)
+        )
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            placeholder = { Text("Create Password") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 18.dp)
+        )
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            placeholder = { Text("Confirm Password") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 18.dp)
+        )
+
+        Button(
+            onClick = {}, modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 24.dp)
+        ) {
+            Text(text = "Signup")
         }
 
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 29.dp)
+        ) {
+            Text("Already have an Account?")
+            Text(
+                "Login",
+                color = Color(0xFFF68B8B),
+                modifier = Modifier.clickable(enabled = true, onClick = {})
+            )
+        }
+        Row(modifier = Modifier.fillMaxWidth()) {
+            HorizontalDivider(thickness = 1.dp, color = Color.Black)
+            Text(text = "OR")
+            HorizontalDivider(thickness = 1.dp, color = Color.Black)
+        }
     }
 }
