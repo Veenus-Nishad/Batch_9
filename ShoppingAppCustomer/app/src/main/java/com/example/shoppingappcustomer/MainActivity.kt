@@ -11,6 +11,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.shoppingappcustomer.presentation.HomeScreen
 import com.example.shoppingappcustomer.presentation.SignUpScreen
 import com.example.shoppingappcustomer.ui.theme.ShoppingAppCustomerTheme
@@ -24,7 +27,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             ShoppingAppCustomerTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    SignUpScreen()
+                    val viewModel:com.example.shoppingappcustomer.presentation.ViewModel= hiltViewModel()
+                    HomeScreen(viewModel = viewModel)
                 }
             }
         }

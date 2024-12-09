@@ -87,7 +87,7 @@ class ViewModel @Inject constructor(
         loadHomeScreenData()
     }
 
-    fun loadHomeScreenData() {
+  private  fun loadHomeScreenData() {
         viewModelScope.launch {
             combine(
                 GetCategoryInLimitUseCase.getCategoryInLimit(),
@@ -95,11 +95,11 @@ class ViewModel @Inject constructor(
             ) { categoryState, productState ->
                 when {
                     categoryState is ResultState.Error -> {
-                        HomeScreenState(isLoading = false, error = categoryState.toString())
+                        HomeScreenState(isLoading = false, error = categoryState.error)
                     }
 
                     productState is ResultState.Error -> {
-                        HomeScreenState(isLoading = false, error = productState.toString())
+                        HomeScreenState(isLoading = false, error = productState.error)
                     }
 
                     categoryState is ResultState.Success && productState is ResultState.Success -> {
@@ -110,12 +110,15 @@ class ViewModel @Inject constructor(
                         )
                     }
 
+                    categoryState is ResultState.Loading || productState is ResultState.Loading -> {
+                        HomeScreenState(isLoading = true) // Only return the loading state
+                    }
                     else -> {
-                        HomeScreenState(isLoading = true)
+                        HomeScreenState() // Default fallback state if no condition is met
                     }
                 }
-            }.collect { state ->
-                _homeScreenState.value = state
+            }.collect { newstate ->
+                _homeScreenState.value = newstate
             }
         }
     }
@@ -133,7 +136,7 @@ class ViewModel @Inject constructor(
                     }
 
                     is ResultState.Success -> {
-                        _getAllCategoryState.value = GetAllCategoryState(data = it.data)
+                        _getAllCategoryState.value = GetAllCategoryState(categoriesData = it.data)
                     }
                 }
             }
@@ -145,7 +148,7 @@ class ViewModel @Inject constructor(
 data class GetAllCategoryState(
     val isLoading: Boolean = false,
     val error: String = "",
-    val data: List<Category?> = emptyList()
+    val categoriesData: List<Category?> = emptyList()
 )
 
 data class HomeScreenState(
