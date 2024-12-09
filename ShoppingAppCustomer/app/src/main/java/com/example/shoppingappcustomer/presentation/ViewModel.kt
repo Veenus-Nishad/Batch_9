@@ -6,9 +6,9 @@ import com.example.shoppingappcustomer.common.ResultState
 import com.example.shoppingappcustomer.domain.models.Category
 import com.example.shoppingappcustomer.domain.models.ProductModel
 import com.example.shoppingappcustomer.domain.models.UserData
+import com.example.shoppingappcustomer.usecase.AuthUserWithEmailAndPasswordUseCase
 import com.example.shoppingappcustomer.usecase.GetCategoryUseCase
 import com.example.shoppingappcustomer.usecase.GetProductsUseCase
-import com.example.shoppingappcustomer.usecase.RegisterUserWithEmailAndPasswordUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,7 +23,8 @@ class ViewModel @Inject constructor(
     private val GetAllProductsUseCase: GetProductsUseCase,
     private val GetCategoryInLimitUseCase: GetCategoryUseCase,
     private val GetProductsInLimitUseCase: GetProductsUseCase,
-    private val RegisterUserWithEmailAndPasswordUseCase: RegisterUserWithEmailAndPasswordUseCase
+    private val RegisterUserWithEmailAndPasswordUseCase: AuthUserWithEmailAndPasswordUseCase,
+    private val LoginUserWithEmailAndPasswordUseCase: AuthUserWithEmailAndPasswordUseCase
 ) :
     ViewModel() {
 
@@ -33,8 +34,33 @@ class ViewModel @Inject constructor(
     private val _registerUserState = MutableStateFlow(RegisterUserState())
     val registerUserState = _registerUserState.asStateFlow()
 
+    private val _loginUserState = MutableStateFlow(LoginUserState())
+    val loginUserState = _loginUserState.asStateFlow()
+
     private val _homeScreenState = MutableStateFlow(HomeScreenState())
     val homeScreenState = _homeScreenState.asStateFlow()
+
+
+    fun loginUserWithEmailAndPassword(userData: UserData) {
+        viewModelScope.launch {
+            LoginUserWithEmailAndPasswordUseCase.loginUserWithEmailAndPassword(userData).collect {
+                when (it) {
+                    is ResultState.Loading -> {
+                        _loginUserState.value = LoginUserState(isLoading = true)
+                    }
+
+                    is ResultState.Success -> {
+                        _loginUserState.value = LoginUserState(data = it.data)
+                    }
+
+                    is ResultState.Error -> {
+                        _loginUserState.value = LoginUserState(error = it.error)
+                    }
+                }
+            }
+
+        }
+    }
 
     fun registerUserWithEmailAndPassword(userData: UserData) {
         viewModelScope.launch {
@@ -133,4 +159,11 @@ data class RegisterUserState(
     val isLoading: Boolean = false,
     val error: String = "",
     val data: String? = null
+)
+
+data class LoginUserState(
+    val isLoading: Boolean = false,
+    val error: String = "",
+    val data: String? = null
+
 )

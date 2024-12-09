@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.Flow
 interface repo {
 
     fun registerUserWithEmailAndPassword(userData: UserData):Flow<ResultState<String>>
+    fun loginUserWithEmailAndPassword(userData: UserData):Flow<ResultState<String>>
 
     fun getAllCategory(): Flow<ResultState<List<Category>>>
     fun getCategoryInLimit(): Flow<ResultState<List<Category>>>

@@ -46,6 +46,20 @@ class repoImpl @Inject constructor(
             }
         }
 
+    override fun loginUserWithEmailAndPassword(userData: UserData): Flow<ResultState<String>> =
+        callbackFlow{
+        trySend(ResultState.Loading)
+        firebaseAuth.signInWithEmailAndPassword(userData.email, userData.password)
+            .addOnSuccessListener {
+                trySend(ResultState.Success("User Login Successfully"))
+            }.addOnFailureListener {
+                trySend(ResultState.Error(it.message.toString()))
+            }
+        awaitClose {
+            close()
+        }
+    }
+
     override fun getAllCategory(): Flow<ResultState<List<Category>>> = callbackFlow {
         trySend(ResultState.Loading)
         // .limit can be used to set the limit of get
