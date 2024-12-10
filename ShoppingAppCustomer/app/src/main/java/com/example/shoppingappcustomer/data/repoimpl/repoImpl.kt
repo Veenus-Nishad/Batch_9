@@ -4,15 +4,12 @@ import com.example.shoppingappcustomer.common.CATEGORY
 import com.example.shoppingappcustomer.common.PRODUCT
 import com.example.shoppingappcustomer.common.ResultState
 import com.example.shoppingappcustomer.common.USERS
-import com.example.shoppingappcustomer.data.di.DataModel_ProvideFirebaseStorageFactory
 import com.example.shoppingappcustomer.domain.models.Category
 import com.example.shoppingappcustomer.domain.models.ProductModel
 import com.example.shoppingappcustomer.domain.models.UserData
 import com.example.shoppingappcustomer.domain.repo.repo
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.toObjects
-import com.google.firebase.firestore.toObjects
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -97,6 +94,12 @@ class repoImpl @Inject constructor(
         awaitClose {
             close()
         }
+    }
+
+    override fun getProductById(): Flow<ResultState<ProductModel>> = callbackFlow{
+        trySend(ResultState.Loading)
+
+
     }
 
     override fun getAllProducts(): Flow<ResultState<List<ProductModel>>> = callbackFlow {

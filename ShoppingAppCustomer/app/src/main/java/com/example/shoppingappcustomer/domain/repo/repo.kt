@@ -13,6 +13,7 @@ interface repo {
 
     fun getAllCategory(): Flow<ResultState<List<Category>>>
     fun getCategoryInLimit(): Flow<ResultState<List<Category>>>
+    fun getProductById():Flow<ResultState<ProductModel>>
 
     fun getAllProducts():Flow<ResultState<List<ProductModel>>>
     fun getProductsInLimit():Flow<ResultState<List<ProductModel>>>
