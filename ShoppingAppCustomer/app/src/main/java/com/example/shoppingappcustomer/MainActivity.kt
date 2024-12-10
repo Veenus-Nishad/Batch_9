@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.shoppingappcustomer.presentation.HomeScreen
 import com.example.shoppingappcustomer.presentation.SignUpScreen
+import com.example.shoppingappcustomer.presentation.seemore.SeeMoreCateScreen
 import com.example.shoppingappcustomer.ui.theme.ShoppingAppCustomerTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,7 +29,7 @@ class MainActivity : ComponentActivity() {
             ShoppingAppCustomerTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     val viewModel:com.example.shoppingappcustomer.presentation.ViewModel= hiltViewModel()
-                    HomeScreen(viewModel = viewModel)
+                    SeeMoreCateScreen(viewModel,modifier = Modifier.padding(innerPadding).fillMaxSize())
                 }
             }
         }
