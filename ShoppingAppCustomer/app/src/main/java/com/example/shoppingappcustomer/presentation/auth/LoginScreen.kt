@@ -1,4 +1,4 @@
-package com.example.shoppingappcustomer.presentation
+package com.example.shoppingappcustomer.presentation.auth
 
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
@@ -34,15 +34,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.shoppingappcustomer.R
+import com.example.shoppingappcustomer.presentation.ViewModel
+import com.example.shoppingappcustomer.presentation.navigation.Routes
 
 @Composable
-fun LoginScreenPreview(
-    viewModel: ViewModel = hiltViewModel()
+fun LoginScreenUi(
+    viewModel: ViewModel = hiltViewModel(),
+    navController:NavController
 ) {
 
     val loginState = viewModel.loginUserState.collectAsState()
@@ -55,8 +58,7 @@ fun LoginScreenPreview(
         }
 
         loginState.value.data?.isNotEmpty() == true -> {
-            Toast.makeText(localContext, loginState.value.data.toString(), Toast.LENGTH_SHORT)
-                .show()
+            navController.navigate(Routes.HomeScreen)
         }
 
         loginState.value.error.isNotEmpty() -> {
@@ -111,7 +113,9 @@ fun LoginScreenPreview(
 
 
             Button(
-                onClick = {}, modifier = Modifier
+                onClick = {
+                    viewModel.loginUserWithEmailAndPassword(email, password)
+                }, modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 44.dp),
                 colors = ButtonDefaults.buttonColors(

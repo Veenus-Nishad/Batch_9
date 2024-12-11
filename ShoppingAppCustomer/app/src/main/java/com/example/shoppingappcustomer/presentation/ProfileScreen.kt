@@ -32,14 +32,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.shoppingappcustomer.R
 
-@Preview(showSystemUi = true)
+
 @Composable
 fun ProfileScreenUi(
-
+    navController: NavController
 ) {
-
 
     Box(modifier = Modifier.fillMaxSize()) {
         Image(

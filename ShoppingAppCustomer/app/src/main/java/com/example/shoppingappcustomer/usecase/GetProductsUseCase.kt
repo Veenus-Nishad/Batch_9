@@ -8,4 +8,6 @@ class GetProductsUseCase @Inject constructor(
 ) {
     fun getAllProducts() = repo.getAllProducts()
     fun getProductsInLimit()=repo.getProductsInLimit()
+    fun getProductById(productId:String)=repo.getProductById(productId)
+
 }

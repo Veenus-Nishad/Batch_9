@@ -19,7 +19,7 @@ import javax.inject.Inject
 class repoImpl @Inject constructor(
     private val firebaseFirestore: FirebaseFirestore,
     private val firebaseAuth: FirebaseAuth,
-    private val firebaseStorage: FirebaseStorage
+    private val firebaseStorage: FirebaseStorage,
 ) : repo {
     override fun registerUserWithEmailAndPassword(userData: UserData): Flow<ResultState<String>> =
         callbackFlow {
@@ -44,18 +44,18 @@ class repoImpl @Inject constructor(
         }
 
     override fun loginUserWithEmailAndPassword(userData: UserData): Flow<ResultState<String>> =
-        callbackFlow{
-        trySend(ResultState.Loading)
-        firebaseAuth.signInWithEmailAndPassword(userData.email, userData.password)
-            .addOnSuccessListener {
-                trySend(ResultState.Success("User Login Successfully"))
-            }.addOnFailureListener {
-                trySend(ResultState.Error(it.message.toString()))
+        callbackFlow {
+            trySend(ResultState.Loading)
+            firebaseAuth.signInWithEmailAndPassword(userData.email, userData.password)
+                .addOnSuccessListener {
+                    trySend(ResultState.Success("User Login Successfully"))
+                }.addOnFailureListener {
+                    trySend(ResultState.Error(it.message.toString()))
+                }
+            awaitClose {
+                close()
             }
-        awaitClose {
-            close()
         }
-    }
 
     override fun getAllCategory(): Flow<ResultState<List<Category>>> = callbackFlow {
         trySend(ResultState.Loading)
@@ -96,9 +96,18 @@ class repoImpl @Inject constructor(
         }
     }
 
-    override fun getProductById(): Flow<ResultState<ProductModel>> = callbackFlow{
+    override fun getProductById(productId:String): Flow<ResultState<ProductModel>> = callbackFlow {
         trySend(ResultState.Loading)
-
+        firebaseFirestore.collection("Products").document(productId).get()
+            .addOnSuccessListener {
+                val productData = it.toObject(ProductModel::class.java)
+                trySend(ResultState.Success(productData!!))
+            }.addOnFailureListener {
+                trySend(ResultState.Error(it.message.toString()))
+            }
+        awaitClose {
+            close()
+        }
 
     }
 

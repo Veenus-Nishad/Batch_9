@@ -24,7 +24,8 @@ class ViewModel @Inject constructor(
     private val GetCategoryInLimitUseCase: GetCategoryUseCase,
     private val GetProductsInLimitUseCase: GetProductsUseCase,
     private val RegisterUserWithEmailAndPasswordUseCase: AuthUserWithEmailAndPasswordUseCase,
-    private val LoginUserWithEmailAndPasswordUseCase: AuthUserWithEmailAndPasswordUseCase
+    private val LoginUserWithEmailAndPasswordUseCase: AuthUserWithEmailAndPasswordUseCase,
+    private val GetProductsByIdUseCase: GetProductsUseCase
 ) :
     ViewModel() {
 
@@ -39,6 +40,28 @@ class ViewModel @Inject constructor(
 
     private val _homeScreenState = MutableStateFlow(HomeScreenState())
     val homeScreenState = _homeScreenState.asStateFlow()
+
+    private val _getProductByIdState=MutableStateFlow(GetProductsByIdState())
+    val getProductByIdState=_getProductByIdState.asStateFlow()
+
+    fun getProductById(productId:String){
+        viewModelScope.launch {
+            GetProductsByIdUseCase.getProductById(productId).collectLatest {
+                when(it){
+                    is ResultState.Loading->{
+                        _getProductByIdState.value= GetProductsByIdState(isLoading = true)
+                    }
+                    is ResultState.Error->{
+                        _getProductByIdState.value= GetProductsByIdState(error = it.error)
+                    }
+                    is ResultState.Success->{
+                        _getProductByIdState.value= GetProductsByIdState(data = it.data)
+
+                    }
+                }
+            }
+        }
+    }
 
 
     fun loginUserWithEmailAndPassword(userData: UserData) {
@@ -169,4 +192,10 @@ data class LoginUserState(
     val error: String = "",
     val data: String? = null
 
+)
+
+data class GetProductsByIdState(
+    val isLoading: Boolean=false,
+    val error:String?=null,
+    val data:ProductModel?=null
 )

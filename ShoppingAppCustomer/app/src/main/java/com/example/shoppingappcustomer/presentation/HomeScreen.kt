@@ -2,8 +2,8 @@ package com.example.shoppingappcustomer.presentation
 
 import android.widget.Toast
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Arrangement.Center
 import androidx.compose.foundation.layout.Arrangement.SpaceBetween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,36 +16,33 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.Center
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
-import androidx.compose.ui.Alignment.Companion.CenterVertically
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.compose.foundation.layout.Arrangement.Vertical
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Alignment.Companion.CenterVertically
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.example.shoppingappcustomer.R
 import com.example.shoppingappcustomer.presentation.components.CategoryEachRow
 
 @Composable
-fun HomeScreen(
-    viewModel: ViewModel = hiltViewModel()
+fun HomeScreenUi(
+    viewModel: ViewModel = hiltViewModel(),
+    navController: NavController
 ) {
     val homeScreenState = viewModel.homeScreenState.collectAsStateWithLifecycle()
     val localContext = LocalContext.current
@@ -89,7 +86,8 @@ CategoryEachRow(it!!)
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = CenterHorizontally,
         verticalArrangement = Arrangement.Center
-    ) {
+    ) { val product = homeScreenState.value.products
+        Icon(painter = painterResource(R.drawable.frock), contentDescription = null,modifier = Modifier.size(60.dp).clickable(onClick = {}))
 
     }
 
@@ -124,7 +122,8 @@ fun HomeScreenPreview() {
             Text("See more")
         }
         Row(modifier = Modifier.padding(top=19.dp)){
-            Icon(painter = painterResource(R.drawable.frock), contentDescription = null,modifier = Modifier.size(60.dp))
+
+
+            }
         }
     }
-}
