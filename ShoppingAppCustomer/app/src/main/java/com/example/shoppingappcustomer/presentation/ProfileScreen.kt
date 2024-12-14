@@ -30,15 +30,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.shoppingappcustomer.R
+import com.example.shoppingappcustomer.presentation.navigation.Routes
+import com.google.firebase.auth.FirebaseAuth
 
 
 @Composable
 fun ProfileScreenUi(
-    navController: NavController
+    navController: NavController,
+    auth:FirebaseAuth
 ) {
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -118,7 +120,10 @@ fun ProfileScreenUi(
                 )
 
                 Button(
-                    onClick = {}, modifier = Modifier
+                    onClick = {
+                        auth.signOut() // signOut function
+                        navController.navigate(Routes.LoginScreen)
+                              }, modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 24.dp),
                     colors = ButtonDefaults.buttonColors(

@@ -87,7 +87,7 @@ CategoryEachRow(it!!)
         horizontalAlignment = CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) { val product = homeScreenState.value.products
-        Icon(painter = painterResource(R.drawable.frock), contentDescription = null,modifier = Modifier.size(60.dp).clickable(onClick = {}))
+        //Icon(painter = painterResource(R.drawable.frock), contentDescription = null,modifier = Modifier.size(60.dp).clickable(onClick = {product.productId}))
 
     }
 
@@ -122,8 +122,10 @@ fun HomeScreenPreview() {
             Text("See more")
         }
         Row(modifier = Modifier.padding(top=19.dp)){
+            Icon(painter = painterResource(R.drawable.frock), contentDescription = null,modifier = Modifier.size(60.dp).clickable(onClick = {
 
 
-            }
+            }))
         }
     }
+}

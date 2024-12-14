@@ -1,5 +1,6 @@
 package com.example.shoppingappcustomer.presentation.auth
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -39,6 +40,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.shoppingappcustomer.R
+import com.example.shoppingappcustomer.domain.models.UserData
 import com.example.shoppingappcustomer.presentation.ViewModel
 import com.example.shoppingappcustomer.presentation.navigation.Routes
 
@@ -57,7 +59,7 @@ fun LoginScreenUi(
             CircularProgressIndicator()
         }
 
-        loginState.value.data?.isNotEmpty() == true -> {
+        loginState.value.data!=null -> {
             navController.navigate(Routes.HomeScreen)
         }
 
@@ -83,6 +85,8 @@ fun LoginScreenUi(
 
             var email by remember { mutableStateOf("") }
             var password by remember { mutableStateOf("") }
+
+
 
             Text(text = "Login", fontSize = 30.sp, modifier = Modifier.padding(bottom = 36.dp))
 
@@ -114,7 +118,8 @@ fun LoginScreenUi(
 
             Button(
                 onClick = {
-                    viewModel.loginUserWithEmailAndPassword(email, password)
+                    viewModel.loginUserWithEmailAndPassword(userData = UserData(email = email, password = password))
+                    Log.d("TAG",email)
                 }, modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 44.dp),

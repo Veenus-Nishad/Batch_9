@@ -73,11 +73,11 @@ class ViewModel @Inject constructor(
                     }
 
                     is ResultState.Success -> {
-                        _loginUserState.value = LoginUserState(data = it.data)
+                        _loginUserState.value = LoginUserState(data = it.data,isLoading = false)
                     }
 
                     is ResultState.Error -> {
-                        _loginUserState.value = LoginUserState(error = it.error)
+                        _loginUserState.value = LoginUserState(error = it.error,isLoading = false)
                     }
                 }
             }
